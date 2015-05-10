@@ -1,25 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/shm.h>
-
-
-/* Memoria compartida */
-int crearMemoria(int cantidadLineas);
-
-
-void main(int argc, char *argv[])
-{
-	//Se esperan un parámetro para determinar la cantidad de líneas de memoria compartida.
-	if(argc == 2) 
-	{	
-		int cantidadLineas = atoi(argv[1]);
-		crearMemoria(cantidadLineas);			
-	}
-	else
-	{
-		printf("No indicó la cantidad de líneas que desea va a tener la memoria compartida\n");
-	}
-}
+#include "../Headers/inicializador.h"
 
 int crearMemoria(int cantidadLineas)
 {

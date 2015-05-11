@@ -7,8 +7,8 @@ int crearMemoria(int cantidadLineas)
     key_t key;
     char *shm, *s;
 
-    	//Se nombrará al segmento de memoria compartida "2015".
-    key = 2015;
+    // Se nombrará al segmento de memoria compartida "2015".
+    key = LLAVE_SEGMENTO;
 
     int tamanio_mem = cantidadLineas*30 + 2;
     

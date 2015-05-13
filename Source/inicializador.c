@@ -14,14 +14,14 @@ int crearMemoria(int cantidadLineas)
     
     //Se crea el segmento.
     if ((shmid = shmget(key, tamanio_mem, IPC_CREAT | 0666)) < 0) {
-        perror("shmget");
+        perror(ERROR_CREACION);
         return -1;
     }
 
     //Se adjunta el segmento al espacio de memoria de datos.
 	
     if ((shm = shmat(shmid, NULL, 0)) == (char *) -1) {
-        perror("shmat");
+        perror(ERROR_LOCALIZACION);
         return -1;
     }
 
@@ -41,7 +41,7 @@ int crearMemoria(int cantidadLineas)
     //Finalmente se guarda en un archivo la cantidad de procesos para que otros puedan saberlo
        
     FILE *fp;
-	fp=fopen("cantidadLineas.txt", "w");
+	fp=fopen(ARCHIVO, "w");
 	fprintf(fp, "%d", cantidadLineas);
 	fclose(fp);
 }

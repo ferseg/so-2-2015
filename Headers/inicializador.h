@@ -6,6 +6,9 @@
 #include <sys/shm.h>
 
 #define LLAVE_SEGMENTO 2015
+#define ARCHIVO "cantidadLineas.txt"
+#define ERROR_CREACION "shmget"
+#define ERROR_LOCALIZACION "shmat"
 
 // Crea la memoria compartida
 int crearMemoria(int);

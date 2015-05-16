@@ -31,6 +31,8 @@ void liberar_memoria()
         return;
     }
  
+    printf("%s\n",shm);
+
  	/*
  	* Se quita el segmento del espacio de datos en memoria
  	*/   

@@ -24,4 +24,12 @@ int getMemID(int);
 // a partir de su shmid
 char *getMem(int);
 
+// Inicializa el ambiente para que los demás procesos
+// encuentren todo listo para ejecutarse
+// recibe la cantidad de lineas que tendrá el segmento
+void init(int);
+
+// Finaliza todos los procesos
+void finalizar();
+
 #endif // INICIALIZADOR_H_

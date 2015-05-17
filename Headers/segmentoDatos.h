@@ -8,8 +8,6 @@
 #include "llaves.h"
 #include "inicializador.h"
 
-#define ARCHIVO "cantidadLineas.txt"
-
 // Crea la memoria compartida
 int getCantidadLineas();
 

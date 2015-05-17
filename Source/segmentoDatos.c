@@ -3,6 +3,7 @@
 int getCantidadLineas(){
     int shmid = getMemID(LLAVE_SEGMENTO_DATOS);
     char *shm = getMem(shmid);
+    //printf("%d\n",shm);
     return atoi(shm);
 }
 

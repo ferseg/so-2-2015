@@ -1,4 +1,5 @@
 #include "../Headers/inicializador.h"
+#include "../Headers/llaves.h"
 
 int getMemID(int key){
     return shmget(key, NULL, IPC_CREAT | 0666);
@@ -8,8 +9,7 @@ char *getMem(int shmid){
     return shmat(shmid, NULL, 0);
 }
 
-int crearMemoria(int key, int cantidadLineas)
-{
+int crearMemoria(int key, int cantidadLineas){
     int shmid;
     char *shm, *s;
     int tamanio_mem = cantidadLineas*TAMANIO_LINEAS;
@@ -41,8 +41,7 @@ int crearMemoria(int key, int cantidadLineas)
     }
 }
 
-void liberar_memoria(int key)
-{    
+void liberar_memoria(int key){    
     /*
     * Obtenemos el segmento 
     * creado por el inicializador.
@@ -51,7 +50,7 @@ void liberar_memoria(int key)
     char *shm = getMem(shmid);
     
     //ver segmento
-    printf("%s",shm);
+    //printf("%s",shm);
 
     /*
     * Se quita el segmento del espacio de datos en memoria
@@ -68,4 +67,15 @@ void liberar_memoria(int key)
         fprintf(stderr, "shmctl(IPC_RMID) failed\n");
         return;
     }
+}
+
+void init(int lineas){
+    crearMemoria(LLAVE_SEGMENTO_DATOS,2);
+    crearMemoria(LLAVE_SEGMENTO,lineas);
+    setCantidadLineas(lineas);
+}
+
+void finalizar(){
+    liberar_memoria(LLAVE_SEGMENTO);
+    liberar_memoria(LLAVE_SEGMENTO_DATOS);
 }

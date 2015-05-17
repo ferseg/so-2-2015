@@ -10,7 +10,7 @@ int crearMemoria(int cantidadLineas)
     // Se nombrará al segmento de memoria compartida "2015".
     key = LLAVE_SEGMENTO;
 
-    int tamanio_mem = cantidadLineas*30 + 2;
+    int tamanio_mem = cantidadLineas*30;
     
     //Se crea el segmento.
     if ((shmid = shmget(key, tamanio_mem, IPC_CREAT | 0666)) < 0) {
@@ -28,14 +28,12 @@ int crearMemoria(int cantidadLineas)
     //Se ingresan datos al segmento
 
     s = shm;
-    *s = '0';
-    s++;
     int i;
     for (i = 1; i <= tamanio_mem; i++){
-        if( i == tamanio_mem)
-    		*s++ = '\0';	
-    	else
-        	*s++ = 'X';
+        if(i % 30 == 0)
+            *s++ = '\n';
+        else
+            *s++ = 'X';
     }
     
     //Finalmente se guarda en un archivo la cantidad de procesos para que otros puedan saberlo

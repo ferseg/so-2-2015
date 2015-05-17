@@ -6,7 +6,7 @@ void main(int argc, char *argv[])
 	if(argc == 2) {
 		// Comentario para github
 		int cantidadLineas = atoi(argv[1]);
-		crearMemoria(cantidadLineas);			
+		crearMemoria(cantidadLineas);
 	}
 	else
 	{

@@ -14,7 +14,7 @@ void liberar_memoria()
     key = LLAVE_SEGMENTO;
     
     int num_lineas = cantidad_lineas();
-    int tamanio_mem = num_lineas*30 + 1;
+    int tamanio_mem = num_lineas*30;
     
     if ((shmid = shmget(key, tamanio_mem, 0666)) < 0) {
     	printf("Error creando el segmento para finalizarlo\n");
@@ -30,8 +30,8 @@ void liberar_memoria()
         perror(ERROR_LOCALIZACION);
         return;
     }
- 
-    printf("%s\n",shm);
+    //ver segmento
+    printf("%s",shm);
 
  	/*
  	* Se quita el segmento del espacio de datos en memoria

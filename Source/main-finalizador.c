@@ -1,4 +1,4 @@
-#include "../Headers/finalizador.h"
+#include "../Headers/inicializador.h"
 #include "../Headers/llaves.h"
 
 int main()

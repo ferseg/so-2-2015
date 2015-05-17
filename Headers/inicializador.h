@@ -14,6 +14,9 @@
 // Crea la memoria compartida
 int crearMemoria(int,int);
 
+//Libera la memoria compartida a partir de su llave
+void liberar_memoria(int key);
+
 // Obtiene el ID  del segmento compartido a partir de su llave
 int getMemID(int);
 

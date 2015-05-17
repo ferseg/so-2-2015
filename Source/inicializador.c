@@ -1,20 +1,18 @@
 #include "../Headers/inicializador.h"
 
-int getMemID(){
-    return shmget(LLAVE_SEGMENTO, NULL, IPC_CREAT | 0666);
+int getMemID(int key){
+    return shmget(key, NULL, IPC_CREAT | 0666);
 }
 
-int crearMemoria(int cantidadLineas)
+char *getMem(int shmid){
+    return shmat(shmid, NULL, 0);
+}
+
+int crearMemoria(int key, int cantidadLineas)
 {
-    //guardarLineas(cantidadLineas);
     int shmid;
-    key_t key;
     char *shm, *s;
-
-    // Se nombrará al segmento de memoria compartida "2015".
-    key = LLAVE_SEGMENTO;
-
-    int tamanio_mem = cantidadLineas*30;
+    int tamanio_mem = cantidadLineas*TAMANIO_LINEAS;
     
     //Se crea el segmento.
     if ((shmid = shmget(key, tamanio_mem, IPC_CREAT | 0666)) < 0) {
@@ -34,19 +32,12 @@ int crearMemoria(int cantidadLineas)
     s = shm;
     int i;
     for (i = 1; i <= tamanio_mem; i++){
-        if(i % 30 == 1)
+        if(i % TAMANIO_LINEAS == 1)
             *s++ = '0';
-        else if(i % 30 == 0)
+        else if(i % TAMANIO_LINEAS == 0)
             *s++ = '\n';
         else
             *s++ = '_';
     }
-    
-    //Finalmente se guarda en un archivo la cantidad de procesos para que otros puedan saberlo
-       
-    FILE *fp;
-	fp=fopen(ARCHIVO, "w");
-	fprintf(fp, "%d", cantidadLineas);
-	fclose(fp);
 }
 

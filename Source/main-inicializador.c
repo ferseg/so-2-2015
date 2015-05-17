@@ -1,4 +1,6 @@
 #include "../Headers/inicializador.h"
+#include "../Headers/llaves.h"
+#include "../Headers/segmentoDatos.h"
 
 void main(int argc, char *argv[])
 {
@@ -6,7 +8,9 @@ void main(int argc, char *argv[])
 	if(argc == 2) {
 		// Comentario para github
 		int cantidadLineas = atoi(argv[1]);
-		crearMemoria(cantidadLineas);
+		crearMemoria(LLAVE_SEGMENTO_DATOS,1);
+		crearMemoria(LLAVE_SEGMENTO,cantidadLineas);
+		setCantidadLineas(cantidadLineas);
 	}
 	else
 	{

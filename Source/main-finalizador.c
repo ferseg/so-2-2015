@@ -1,11 +1,9 @@
 #include "../Headers/finalizador.h"
-
+#include "../Headers/llaves.h"
 
 int main()
 {
-	//getCantidadLineas();
-    liberar_memoria();
-
-	/*Se borran archivos usados durante el proceso*/
-	remove("cantidadLineas.txt");
+	printf("%d\n",getCantidadLineas());
+    liberar_memoria(LLAVE_SEGMENTO);
+    liberar_memoria(LLAVE_SEGMENTO_DATOS);
 }

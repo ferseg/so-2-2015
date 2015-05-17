@@ -1,8 +1,8 @@
 # Copyrigth © 2015, All rights reserved.
 # makefile
 # Author: kenneth Madrigal Soto
-INIT_FILES = Source/main-inicializador.c Source/inicializador.c
-FINAL_FILES = Source/main-finalizador.c Source/finalizador.c Source/inicializador.c
+INIT_FILES = Source/main-inicializador.c Source/inicializador.c Source/segmentoDatos.c
+FINAL_FILES = Source/main-finalizador.c Source/finalizador.c Source/inicializador.c Source/segmentoDatos.c
 CFLAGS = -w -I ../Hearders #-Wall
 CC = gcc
 INIT_NAME = bin/inicializador

@@ -5,15 +5,20 @@
 #include <unistd.h>
 #include <sys/shm.h>
 #include "llaves.h"
+#include "segmentoDatos.h"
 
 #define TAMANIO_LINEAS 30
-#define ARCHIVO "cantidadLineas.txt"
 #define ERROR_CREACION "shmget"
 #define ERROR_LOCALIZACION "shmat"
 
 // Crea la memoria compartida
-int crearMemoria(int);
+int crearMemoria(int,int);
 
-int getMemId();
+// Obtiene el ID  del segmento compartido a partir de su llave
+int getMemID(int);
+
+// Obtiene un puntero al inicio del segmento compartido
+// a partir de su shmid
+char *getMem(int);
 
 #endif // INICIALIZADOR_H_

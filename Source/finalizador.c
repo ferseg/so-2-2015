@@ -3,7 +3,7 @@
 
 void liberar_memoria()
 {
-	int shmid;
+	int shmid = getMemID();
     key_t key;
     char *shm;
     
@@ -14,13 +14,6 @@ void liberar_memoria()
     key = LLAVE_SEGMENTO;
     
     int num_lineas = cantidad_lineas();
-    int tamanio_mem = num_lineas*30;
-    
-    if ((shmid = shmget(key, tamanio_mem, 0666)) < 0) {
-    	printf("Error creando el segmento para finalizarlo\n");
-		perror(ERROR_CREACION);
-		return;
-	}
 
 	/*
     * Se localiza el segmento.

@@ -1,8 +1,12 @@
 #include "../Headers/inicializador.h"
 
+int getMemID(){
+    return shmget(LLAVE_SEGMENTO, NULL, IPC_CREAT | 0666);
+}
+
 int crearMemoria(int cantidadLineas)
 {
-    char c;
+    //guardarLineas(cantidadLineas);
     int shmid;
     key_t key;
     char *shm, *s;
@@ -17,7 +21,7 @@ int crearMemoria(int cantidadLineas)
         perror(ERROR_CREACION);
         return -1;
     }
-
+    
     //Se adjunta el segmento al espacio de memoria de datos.
 	
     if ((shm = shmat(shmid, NULL, 0)) == (char *) -1) {
@@ -30,10 +34,12 @@ int crearMemoria(int cantidadLineas)
     s = shm;
     int i;
     for (i = 1; i <= tamanio_mem; i++){
-        if(i % 30 == 0)
+        if(i % 30 == 1)
+            *s++ = '0';
+        else if(i % 30 == 0)
             *s++ = '\n';
         else
-            *s++ = 'X';
+            *s++ = '_';
     }
     
     //Finalmente se guarda en un archivo la cantidad de procesos para que otros puedan saberlo
@@ -43,3 +49,4 @@ int crearMemoria(int cantidadLineas)
 	fprintf(fp, "%d", cantidadLineas);
 	fclose(fp);
 }
+

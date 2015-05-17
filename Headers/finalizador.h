@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/shm.h>
+#include "inicializador.h"
 
 #define LLAVE_SEGMENTO 2015
 #define ARCHIVO "cantidadLineas.txt"

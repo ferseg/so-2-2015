@@ -33,7 +33,7 @@ char *getTime(){
 char *crearMensaje(char *id,int linea){
     char *mensaje[TAMANIO_LINEAS];
     char *fecha = getTime();
-    sprintf(mensaje,"%s|%3d|%s|\n",id,linea,fecha);
+    sprintf(mensaje,"|%s|%3d|%s|\n",id,linea,fecha);
     /*
     1 reader 003
                 12
@@ -57,10 +57,10 @@ int crearMemoria(int key, int cantidadLineas){
         //Se ingresan datos al segmento
         s = shm;
         int i;
-        for (i = 1; i <= tamanio_mem; i++){
+        for (i = 0; i < tamanio_mem; i++){
             if(i % TAMANIO_LINEAS == 1)
                 *s++ = '0';
-            else if(i % TAMANIO_LINEAS == 0)
+            else if(i % TAMANIO_LINEAS == TAMANIO_LINEAS-1)
                 *s++ = '\n';
             else
                 *s++ = '_';
@@ -113,14 +113,13 @@ int escribir(char *id){
 
     s = shm;
     contadorLinea = 1;
-    for(punteroSegmento = 0; punteroSegmento <= tamanioMem; ){
-        if((punteroSegmento % TAMANIO_LINEAS) == 0 && (s[punteroSegmento] == '0')){
+    for(punteroSegmento = 1; punteroSegmento <= tamanioMem; ){
+        if(s[punteroSegmento] == '0'){
             int punteroMensaje;
             char *mensaje;
             mensaje = crearMensaje(id,contadorLinea);
-            //printf("%s",mensaje);
             for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
-                s[punteroSegmento] = mensaje[punteroMensaje];
+                s[punteroSegmento-1] = mensaje[punteroMensaje];
                 punteroSegmento++;
                 }
             //falta escribir en bitácora

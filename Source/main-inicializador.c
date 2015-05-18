@@ -4,9 +4,9 @@ void main(int argc, char *argv[])
 {
 	//Se esperan un parámetro para determinar la cantidad de líneas de memoria compartida.
 	if(argc == 2) {
-		// Comentario para github
+		// Inicializamos las variables y el segmento compartido
 		int cantidadLineas = atoi(argv[1]);
-		crearMemoria(cantidadLineas);			
+		init(cantidadLineas);
 	}
 	else
 	{

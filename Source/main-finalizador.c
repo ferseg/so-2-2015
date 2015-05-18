@@ -1,11 +1,7 @@
-#include "../Headers/finalizador.h"
-
+#include "../Headers/inicializador.h"
 
 int main()
 {
-
-    liberar_memoria();
-
-	/*Se borran archivos usados durante el proceso*/
-	remove("cantidadLineas.txt");
+	// Finalizamos los procesos y liberamos la memoria
+	finalizar();
 }

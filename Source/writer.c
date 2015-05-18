@@ -38,11 +38,10 @@ void ejecutarWriter(writer *writerActual){
 			sleep(writerActual->descanso);
 		}
 		else{
-			// Hay no encontrar memoria compartida
+			// Al no encontrar memoria compartida
 			// el proceso muere.
 			printf("El writer %d fue finalizado.\n",writerActual->id);
-			//falta escribir en bitácora
-			return;
+			return;//falta escribir en bitácora
 		}
 	}
 }

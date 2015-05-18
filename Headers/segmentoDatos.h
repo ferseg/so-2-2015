@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/shm.h>
-#include "llaves.h"
+#include "constantes.h"
 #include "inicializador.h"
 
 // Obtiene la cantidad de lineas del segmento

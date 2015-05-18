@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/shm.h>
 #include <pthread.h>
-#include "llaves.h"
+#include "constantes.h"
 #include "inicializador.h"
 
 typedef struct writer 
@@ -13,6 +13,7 @@ typedef struct writer
     int id;
     int descanso;
     int escritura;
+    char *estado;
 }writer;
 
 // Retorna un nuevo writer

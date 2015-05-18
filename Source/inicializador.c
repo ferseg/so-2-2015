@@ -1,5 +1,4 @@
 #include "../Headers/inicializador.h"
-#include "../Headers/llaves.h"
 
 // Obtiene el ID  del segmento compartido a partir de su llave y su tamanio
 int getMemID(int key,int tamanio_mem){
@@ -30,16 +29,23 @@ char *getTime(){
 }
 
 // Crea un mensaje valido para el segmento
-char *crearMensaje(char *id,int linea){
+// a partir de un id, el estado del proceso
+// y la linea q modifico
+char *crearMensaje(char *id,char *estado,int linea){
     char *mensaje[TAMANIO_LINEAS];
     char *fecha = getTime();
-    sprintf(mensaje,"|%s|%3d|%s|\n",id,linea,fecha);
+    sprintf(mensaje,"|%s|%3d|%s|%s|\n",id,linea,fecha,estado);
     /*
-    1 reader 003
+    |1|reader|0ID
                 12
-                 001
+                |Lin
                     16
-                     26|\n
+                    |fecha| estado\n
+                             51
+    dormido
+    bloqueado
+    leyendo
+    escribiendo
                      */
     return mensaje;
 }
@@ -59,7 +65,7 @@ int crearMemoria(int key, int cantidadLineas){
         int i;
         for (i = 0; i < tamanio_mem; i++){
             if(i % TAMANIO_LINEAS == 1)
-                *s++ = '0';
+                *s++ = LINEA_VACIA;
             else if(i % TAMANIO_LINEAS == TAMANIO_LINEAS-1)
                 *s++ = '\n';
             else
@@ -103,6 +109,11 @@ int liberarMemoria(int key){
     }
 }
 
+// Encuentra la siguiente linea vacía en el segmento
+// y escribe en ella el mensaje, retorna 1 si tuvo exito
+// y 0 si todas las lineas estaban llenas
+// el id debera venir en el formato 
+// 1|tipo|id dl proceso
 int escribir(char *id){
     int punteroSegmento,contadorLinea, shmid, tamanioMem;
     char *shm, *s;
@@ -114,15 +125,14 @@ int escribir(char *id){
     s = shm;
     contadorLinea = 1;
     for(punteroSegmento = 1; punteroSegmento <= tamanioMem; ){
-        if(s[punteroSegmento] == '0'){
+        if(s[punteroSegmento] == LINEA_VACIA){
             int punteroMensaje;
             char *mensaje;
-            mensaje = crearMensaje(id,contadorLinea);
+            mensaje = crearMensaje(id,ESTADO_INICIAL,contadorLinea);
             for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
                 s[punteroSegmento-1] = mensaje[punteroMensaje];
                 punteroSegmento++;
                 }
-            //falta escribir en bitácora
             return EXITO;
         }
         punteroSegmento += TAMANIO_LINEAS;
@@ -133,15 +143,6 @@ int escribir(char *id){
 
 int borrar(){return EXITO;}
 int leer(){return EXITO;}
-
-
-void printSegmento(int key){
-    int shmid;
-    char *shm;
-    shmid = getMemID(LLAVE_SEGMENTO,NULL);
-    shm = getMem(shmid);
-    printf("%s",shm);
-}
 
 // Inicializa el ambiente para que los demás procesos
 // encuentren todo listo para ejecutarse
@@ -158,10 +159,21 @@ void init(int lineas){
 
 // Finaliza todos los procesos
 void finalizar(){
-    //impresion
+    //impresion para comprobar el estado final del segmento y los procesos
     printSegmento(LLAVE_SEGMENTO);
+    printf("\n");
+    printSegmento(LLAVE_SEGMENTO_WRITERS);
     if(liberarMemoria(LLAVE_SEGMENTO) && liberarMemoria(LLAVE_SEGMENTO_DATOS)){
         //falta finalizar demás procesos
+        if(!liberarMemoria(LLAVE_SEGMENTO_WRITERS)){
+            printf(MENSAJE_ERROR_WRITERS);
+            }
+        if(!liberarMemoria(LLAVE_SEGMENTO_READERS)){
+            printf(MENSAJE_ERROR_READERS);
+            }
+        if(!liberarMemoria(LLAVE_SEGMENTO_READERS_EGOISTAS)){
+            printf(MENSAJE_ERROR_READERS_EGOISTAS);
+            }
         printf(MENSAJE_FINALIZACION_EXITOSA);
     }
     else{

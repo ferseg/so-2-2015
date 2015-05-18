@@ -5,13 +5,16 @@
 #include <unistd.h>
 #include <sys/shm.h>
 #include <time.h>
-#include "llaves.h"
+#include "constantes.h"
 #include "segmentoDatos.h"
 
-#define EXITO 1
-#define FRACASO 0
 #define ERROR_CREACION "shmget"
 #define ERROR_LOCALIZACION "shmat"
+
+#define MENSAJE_ERROR_WRITERS "El finalizador no encontró writers.\n"
+#define MENSAJE_ERROR_READERS "El finalizador no encontró readers.\n"
+#define MENSAJE_ERROR_READERS_EGOISTAS "El finalizador no encontró readers egoistas.\n"
+
 #define MENSAJE_CREACION_EXITOSA "El ambiente se inicializaó correctamente.\n"
 #define MENSAJE_CREACION_FALLIDA "No se pudo inicializar el ambiente, asegurese de finalizar corridas anteriores.\n"
 #define MENSAJE_FINALIZACION_EXITOSA "Procesos finalizados correctamente.\n"
@@ -21,7 +24,7 @@
 int crearMemoria(int,int);
 
 //Libera la memoria compartida a partir de su llave
-int liberar_memoria(int key);
+int liberarMemoria(int key);
 
 // Obtiene el ID  del segmento compartido a partir de su llave y su tamanio
 int getMemID(int,int);
@@ -38,6 +41,16 @@ void init(int);
 // Finaliza todos los procesos
 void finalizar();
 
+// Encuentra la siguiente linea vacía en el segmento
+// y escribe en ella el mensaje, retorna 1 si tuvo exito
+// y 0 si todas las lineas estaban llenas
+// el id debera venir en el formato 
+// 1|tipo|id dl proceso
 int escribir(char*);
+
+// Crea un mensaje valido para el segmento
+// a partir de un id, el estado del proceso
+// y la linea q modifico
+char *crearMensaje(char*,char*,int);
 
 #endif // INICIALIZADOR_H_

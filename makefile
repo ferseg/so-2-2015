@@ -4,7 +4,7 @@
 
 #Archivos
 INIT_FILES = Source/main-inicializador.c Source/inicializador.c Source/segmentoDatos.c
-WRITER_FILES = Source/main-writer.c Source/writer.c
+WRITER_FILES = Source/main-writer.c Source/writer.c Source/inicializador.c Source/segmentoDatos.c
 FINAL_FILES = Source/main-finalizador.c Source/inicializador.c Source/segmentoDatos.c
 
 #Librerías

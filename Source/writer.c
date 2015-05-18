@@ -11,12 +11,20 @@ writer* newWriter(int pId, int pEscritura,int pDescanso){
 	return newWriter;
 }
 
+// Hilo encargado de la ejecución del writer
 void ejecutarWriter(writer *writerActual){
-	printf("%d %d\n",writerActual->id,writerActual->escritura);
-	sleep(writerActual->escritura);
-	printf("%d %d\n",writerActual->id,writerActual->descanso);
-	sleep(writerActual->descanso);
-	printf("fin\n");
+	char *id[TAMANIO_LINEAS];
+	sprintf(id,"1|writer|%3d",writerActual->id);
+	escribir(id);
+
+	// printf("%d %d\n",writerActual->id,writerActual->escritura);
+	// sleep(writerActual->escritura);
+	// printf("%d %d\n",writerActual->id,writerActual->descanso);
+	// sleep(writerActual->descanso);
+	// printf("fin\n");
+
+	// trabajando en inicializador.c, agregar buscarLineaVacia()
+
 }
 
 //Inicializa los writers, recibe cantidad de writers, tiempo de escritura

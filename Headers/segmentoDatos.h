@@ -8,10 +8,10 @@
 #include "llaves.h"
 #include "inicializador.h"
 
-// Crea la memoria compartida
+// Obtiene la cantidad de lineas del segmento
 int getCantidadLineas();
 
-// Obtiene el ID  del segmento compartido a partir de su llave
+// Guarda la cantidad de lineas del segmento
 void setCantidadLineas(int);
 
 #endif // SEGMENTO_DATOS_H_

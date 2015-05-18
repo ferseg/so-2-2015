@@ -31,22 +31,16 @@ char *getTime(){
 // Crea un mensaje valido para el segmento
 // a partir de un id, el estado del proceso
 // y la linea q modifico
-char *crearMensaje(char *id,char *estado,int linea){
+char *crearMensaje(char *prefijo,char *extra,int linea){
     char *mensaje[TAMANIO_LINEAS];
-    char *fecha = getTime();
-    sprintf(mensaje,"|%s|%3d|%s|%s|\n",id,linea,fecha,estado);
+    char *str[20];
+    sprintf(str,"%s",extra);
+    sprintf(mensaje,"|%s|%3d|%s|\n",prefijo,linea,str);
     /*
-    |1|reader|0ID
-                12
-                |Lin
-                    16
-                    |fecha| estado\n
-                             51
-    dormido
-    bloqueado
-    leyendo
-    escribiendo
-                     */
+|1|writer |  1|  1|2015-05-18 13:53:57|
+|writer |  1|  1|Escribiendo          |
+_0_____________________________________
+    */
     return mensaje;
 }
 
@@ -128,12 +122,12 @@ int escribir(char *id){
         if(s[punteroSegmento] == LINEA_VACIA){
             int punteroMensaje;
             char *mensaje;
-            mensaje = crearMensaje(id,ESTADO_INICIAL,contadorLinea);
+            mensaje = crearMensaje(id,getTime(),contadorLinea);
             for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
                 s[punteroSegmento-1] = mensaje[punteroMensaje];
                 punteroSegmento++;
                 }
-            return EXITO;
+            return contadorLinea;
         }
         punteroSegmento += TAMANIO_LINEAS;
         contadorLinea++;
@@ -160,8 +154,9 @@ void init(int lineas){
 // Finaliza todos los procesos
 void finalizar(){
     //impresion para comprobar el estado final del segmento y los procesos
+    printf("\nEstado segmento:\n");
     printSegmento(LLAVE_SEGMENTO);
-    printf("\n");
+    printf("\nEstado writers:\n");
     printSegmento(LLAVE_SEGMENTO_WRITERS);
     if(liberarMemoria(LLAVE_SEGMENTO) && liberarMemoria(LLAVE_SEGMENTO_DATOS)){
         //falta finalizar demás procesos

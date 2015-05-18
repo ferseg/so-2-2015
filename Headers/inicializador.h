@@ -48,6 +48,9 @@ void finalizar();
 // 1|tipo|id dl proceso
 int escribir(char*);
 
+// Retorna un char con la hora actual
+char *getTime();
+
 // Crea un mensaje valido para el segmento
 // a partir de un id, el estado del proceso
 // y la linea q modifico

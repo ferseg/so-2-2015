@@ -1,4 +1,4 @@
-#include "../Headers/writer.h"
+#include "../Headers/proceso.h"
 
 int main()
 {

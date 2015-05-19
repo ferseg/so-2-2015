@@ -3,10 +3,10 @@
 # Author: kenneth Madrigal Soto
 
 #Archivos
-INIT_FILES = Source/main-inicializador.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c
-WRITER_FILES = Source/main-writer.c Source/proceso.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c
-READER_E_FILES = Source/main-readerEgoista.c Source/proceso.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c
-FINAL_FILES = Source/main-finalizador.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c
+INIT_FILES = Source/main-inicializador.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
+WRITER_FILES = Source/main-writer.c Source/proceso.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
+READER_E_FILES = Source/main-readerEgoista.c Source/proceso.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
+FINAL_FILES = Source/main-finalizador.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
 
 #Librerías
 CFLAGS = -w -I ../Hearders #-Wall

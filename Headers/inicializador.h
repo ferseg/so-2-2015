@@ -5,6 +5,15 @@
 #include <unistd.h>
 #include <sys/shm.h>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <semaphore.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+
 #include "constantes.h"
 #include "segmentoDatos.h"
 
@@ -15,7 +24,7 @@
 #define MENSAJE_ERROR_READERS "El finalizador no encontró readers.\n"
 #define MENSAJE_ERROR_READERS_EGOISTAS "El finalizador no encontró readers egoistas.\n"
 
-#define MENSAJE_CREACION_EXITOSA "El ambiente se inicializaó correctamente.\n"
+#define MENSAJE_CREACION_EXITOSA "El ambiente se inicializó correctamente.\n"
 #define MENSAJE_CREACION_FALLIDA "No se pudo inicializar el ambiente, asegurese de finalizar corridas anteriores.\n"
 #define MENSAJE_FINALIZACION_EXITOSA "Procesos finalizados correctamente.\n"
 #define MENSAJE_FINALIZACION_FALLIDA "Se intentó finalizar la memoria, pero esta no ha sido inicializada.\n"

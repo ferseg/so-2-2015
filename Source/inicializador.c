@@ -18,12 +18,12 @@ char *getMem(int shmid){
 // Retorna un arreglo de chars con la hora
 char *getTime(){
     time_t timer;
-    char *buffer[100];
+    char *buffer = malloc(sizeof(char)*100);clearString(&buffer,100);
     struct tm* tm_info;
     time(&timer);
     tm_info = localtime(&timer);
     strftime(buffer, 100, "%Y-%m-%d %H:%M:%S", tm_info);
-    char *fecha[100];
+    char *fecha= malloc(sizeof(char)*100);clearString(&fecha,100);
     sprintf(fecha,"%s",buffer);
     return fecha;
 }
@@ -32,8 +32,8 @@ char *getTime(){
 // a partir de un id, el estado del proceso
 // y la linea q modifico
 char *crearMensaje(char *prefijo,char *extra,int linea){
-    char *mensaje[TAMANIO_LINEAS];
-    char *str[20];
+    char *mensaje = malloc(sizeof(char)*TAMANIO_LINEAS);clearString(&mensaje,TAMANIO_LINEAS);
+    char *str = malloc(sizeof(char)*TAMANIO_LINEAS);clearString(&str,TAMANIO_LINEAS);
     sprintf(str,"%s",extra);
     sprintf(mensaje,"|%s|%3d|%s|\n",prefijo,linea,str);
     /*
@@ -44,6 +44,11 @@ _0_____________________________________
     return mensaje;
 }
 
+char *crearMensajeVacio(){
+    char *mensaje = malloc(sizeof(char)*TAMANIO_LINEAS);clearString(&mensaje,TAMANIO_LINEAS);
+    sprintf(mensaje,"%s","_1_____________________________________\n");
+    return mensaje;
+}
 // Crea la memoria compartida
 int crearMemoria(int key, int cantidadLineas){
     int shmid;
@@ -111,28 +116,29 @@ int liberarMemoria(int key){
 // 1|tipo|id dl proceso
 int escribir(char *id){
     int punteroSegmento,contadorLinea, shmid, tamanioMem;
-    char *shm, *s;
+    char *shm,*s;
 
     shmid = getMemID(LLAVE_SEGMENTO,NULL);
     shm = getMem(shmid);
     tamanioMem = getCantidadLineas()*TAMANIO_LINEAS;
-
     s = shm;
     contadorLinea = 1;
-    for(punteroSegmento = 1; punteroSegmento <= tamanioMem; ){
+    for(punteroSegmento = 1; punteroSegmento < tamanioMem; ){
         if(s[punteroSegmento] == LINEA_VACIA){
             int punteroMensaje;
-            char *mensaje;
+            char *mensaje = malloc(sizeof(char)*TAMANIO_LINEAS);clearString(&mensaje, TAMANIO_LINEAS);
             mensaje = crearMensaje(id,getTime(),contadorLinea);
             for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
                 s[punteroSegmento-1] = mensaje[punteroMensaje];
                 punteroSegmento++;
                 }
+            printf("%d.\n",contadorLinea);
             return contadorLinea;
         }
         punteroSegmento += TAMANIO_LINEAS;
         contadorLinea++;
     }
+    printf("asd.\n");
     return FRACASO;
 }
 
@@ -142,7 +148,7 @@ int escribir(char *id){
 // de linea que borró en caso contrario.
 int borrar(){
     int punteroSegmento,contadorLinea, shmid, tamanioMem;
-    char *shm, *s;
+    char *shm,*s;
 
     shmid = getMemID(LLAVE_SEGMENTO,NULL);
     shm = getMem(shmid);
@@ -154,17 +160,16 @@ int borrar(){
         punteroSegmento = 1;
         if(s[punteroSegmento] == LINEA_VACIA){
             int punteroMensaje;
-            char *mensaje[40];
-            sprintf(mensaje,"_1_____________________________________\n",);
+            char *mensaje = malloc(sizeof(char)*TAMANIO_LINEAS);clearString(&mensaje,TAMANIO_LINEAS);
+            mensaje = crearMensajeVacio();
             for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
-                //s[punteroSegmento-1] = mensaje[punteroMensaje];
-                printf("%c",mensaje[punteroMensaje]);
+                s[punteroSegmento-1] = mensaje[punteroMensaje];
                 punteroSegmento++;
                 }
-            printf("\n");
+                    //printf("asd1.\n");
             return contadorLinea;
         }
-
+                    //printf("asd1.\n");
     return FRACASO;
 }
 int leer(){return EXITO;}
@@ -173,6 +178,8 @@ int leer(){return EXITO;}
 // encuentren todo listo para ejecutarse
 // recibe la cantidad de lineas que tendrá el segmento
 void init(int lineas){
+    sem_t *mutex;
+    mutex = sem_open(SEM_NAME,O_CREAT,0644,1);
     if(crearMemoria(LLAVE_SEGMENTO_DATOS,2) && crearMemoria(LLAVE_SEGMENTO,lineas)){
         setCantidadLineas(lineas);
         printf(MENSAJE_CREACION_EXITOSA);
@@ -180,12 +187,17 @@ void init(int lineas){
     else{
         printf(MENSAJE_CREACION_FALLIDA);
     }
+    sem_close(mutex);
 }
 
 // Finaliza todos los procesos
 void finalizar(){
     //impresion para comprobar el estado final del segmento y los procesos
     printEstado();
+
+    sem_t *mutex;
+    mutex = sem_open(SEM_NAME,0,0644,1);
+    //sem_wait(mutex);
     if(liberarMemoria(LLAVE_SEGMENTO) && liberarMemoria(LLAVE_SEGMENTO_DATOS)){
         //falta finalizar demás procesos
         if(!liberarMemoria(LLAVE_SEGMENTO_WRITERS)){
@@ -202,4 +214,7 @@ void finalizar(){
     else{
         printf(MENSAJE_FINALIZACION_FALLIDA);
     }
+    //sem_post(mutex);
+    sem_close(mutex);
+    sem_unlink(SEM_NAME);
 }

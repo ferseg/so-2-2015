@@ -6,7 +6,8 @@
 // el finalizador imprime el estado d los segmentos
 void registrar(int segmentoDatosID,int id,int linea,char *prefijo,char *estado){
 	int punteroMensaje,punteroSegmento;
-	char *segmentoDatos,*mensaje;
+	char *segmentoDatos;
+    char *mensaje = malloc(sizeof(char)*TAMANIO_LINEAS);clearString(&mensaje,TAMANIO_LINEAS);
 	if(segmentoDatosID > 0){
 		segmentoDatos = getMem(segmentoDatosID);
 		punteroSegmento = id * TAMANIO_LINEAS;
@@ -20,8 +21,12 @@ void registrar(int segmentoDatosID,int id,int linea,char *prefijo,char *estado){
 
 // Imprime un segmento a partir de su llave
 void printEstado(){
+
+    sem_t *mutex;
+    mutex = sem_open(SEM_NAME,0,0644,1);
     int segmentoID,writersID,readersID,readersEID;
     char *segmento,*writers,*readers,*readersE;
+    //sem_wait(mutex);
     if(segmentoID = getMemID(LLAVE_SEGMENTO,NULL)){
         segmento = getMem(segmentoID);
         printf("%s%s%s%s%s\n",BORDE, TITULO_DATOS, BORDE, segmento, BORDE);
@@ -41,4 +46,6 @@ void printEstado(){
             printf("%s%s%s%s%s\n",BORDE, TITULO_READER_EGOISTA, BORDE, readersE, BORDE);
             }
         }
+    //sem_post(mutex);
+    sem_close(mutex);
 }

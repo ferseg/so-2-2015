@@ -20,11 +20,16 @@ proceso* newProcess(int pId, int pEscritura,int pDescanso,int pTipo){
 // Hilo encargado de la ejecución de los procesos
 void ejecutarProceso(proceso *procesoActual){
 	int shmid, contadorLinea;
-	char *prefijo[TAMANIO_LINEAS];
-	char *prefijoLog[TAMANIO_LINEAS];
-	char *segmentoDatos,*mensaje;
+	char *prefijo = malloc(sizeof(char)*50);
+	char *prefijoLog = malloc(sizeof(char)*50);
+    sem_t *mutex;
+	mutex = sem_open(SEM_NAME,0,0644,1);
+	clearString(&prefijo, 50);
+	clearString(&prefijoLog, 50);
+
+	char *segmentoDatos;
 	int segmentoDatosID,punteroMensaje,punteroSegmento;
-	char *tipoProceso[30];
+	char *tipoProceso = malloc(sizeof(char)*30);clearString(&tipoProceso, 30);
 	switch(procesoActual->tipo){
 	    case TIPO_WRITER:
 	    	sprintf(tipoProceso,"%s", WRITER);
@@ -48,6 +53,8 @@ void ejecutarProceso(proceso *procesoActual){
 	}
 
 	while(EXITO){
+		// Inicializamos el semaforo
+		sem_wait(mutex);
 		if(shmid = getMemID(LLAVE_SEGMENTO,NULL)){
 			switch(procesoActual->tipo){
 			    case TIPO_WRITER:
@@ -56,17 +63,22 @@ void ejecutarProceso(proceso *procesoActual){
 					if(contadorLinea = escribir(prefijo)){
 						// Tiempo de escritura
 						procesoActual->lineaActual = contadorLinea;
-						registrar(segmentoDatosID,(procesoActual->id-1),contadorLinea,prefijoLog,ESTADO_ESCRITURA);
+						registrar(segmentoDatosID,(procesoActual->id)-1,contadorLinea,prefijoLog,ESTADO_ESCRITURA);
 						procesoActual->estado = ESTADO_ESCRITURA;
 						sleep(procesoActual->escritura);
+						sem_post(mutex);
 						// Tiempo de descanso
-						registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
+						registrar(segmentoDatosID,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
 						procesoActual->estado = ESTADO_DESCANSO;
 						sleep(procesoActual->descanso);
-					}//////////////////////////////////////////////////////
+					}
+					else{
+					 	sem_post(mutex);
+					}
+					//////////////////////////////////////////////////////
 					//Luego de dormir se bloquean y esperan el semáforo
 					procesoActual->estado = ESTADO_BLOQUEADO;
-					registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
+					registrar(segmentoDatosID,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
 					break;
 				case TIPO_READER://////////////por implementar
 
@@ -78,7 +90,7 @@ void ejecutarProceso(proceso *procesoActual){
 						// Tiempo de escritura
 						procesoActual->lineaActual = contadorLinea;
 						registrar(segmentoDatosID,(procesoActual->id-1),contadorLinea,prefijoLog,ESTADO_LECTURA);
-						procesoActual->estado = ESTADO_ESCRITURA;
+						procesoActual->estado = ESTADO_LECTURA;
 						sleep(procesoActual->escritura);
 						// Tiempo de descanso
 						registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
@@ -96,8 +108,11 @@ void ejecutarProceso(proceso *procesoActual){
 		else{
 			// Al no encontrar memoria compartida
 			// el proceso muere.
+			sem_post(mutex);
+			sem_close(mutex);
 			printf("El %s %d fue finalizado.\n",tipoProceso,procesoActual->id);////////////////////////////////////
-			return;//falta escribir en bitácora
+		    pthread_exit(0);
+			//falta escribir en bitácora
 		}
 	}
 }

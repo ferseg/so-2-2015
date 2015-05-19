@@ -1,6 +1,8 @@
 #ifndef LLAVES_H_
 #define LLAVES_H_
 
+
+#define SEM_NAME "Ken"
 #define EXITO 1
 #define FRACASO 0
 #define LINEA_VACIA '0'
@@ -16,5 +18,7 @@
 #define ESTADO_BLOQUEADO "Bloqueado            "
 #define ESTADO_LECTURA   "Leyendo              "
 #define ESTADO_ESCRITURA "Escribiendo          "
+
+#include "../Headers/utilities.h"
 
 #endif // LLAVES_H_

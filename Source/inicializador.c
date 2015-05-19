@@ -104,8 +104,9 @@ int liberarMemoria(int key){
 }
 
 // Encuentra la siguiente linea vacía en el segmento
-// y escribe en ella el mensaje, retorna 1 si tuvo exito
-// y 0 si todas las lineas estaban llenas
+// y escribe en ella el mensaje, retorna 0 si todas 
+// las lineas estaban llenas y en caso contrario
+// el retorna el numero de la linea modificada.
 // el id debera venir en el formato 
 // 1|tipo|id dl proceso
 int escribir(char *id){
@@ -135,7 +136,37 @@ int escribir(char *id){
     return FRACASO;
 }
 
-int borrar(){return EXITO;}
+// Escoje aleatoriamente una linea del segmento
+// y si está llena la borra. Retorna 0 si 
+// no borró nada en el segmento y el numero
+// de linea que borró en caso contrario.
+int borrar(){
+    int punteroSegmento,contadorLinea, shmid, tamanioMem;
+    char *shm, *s;
+
+    shmid = getMemID(LLAVE_SEGMENTO,NULL);
+    shm = getMem(shmid);
+    tamanioMem = getCantidadLineas()*TAMANIO_LINEAS;
+
+    s = shm;
+    contadorLinea = 1;
+
+        punteroSegmento = 1;
+        if(s[punteroSegmento] == LINEA_VACIA){
+            int punteroMensaje;
+            char *mensaje[40];
+            sprintf(mensaje,"_1_____________________________________\n",);
+            for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
+                //s[punteroSegmento-1] = mensaje[punteroMensaje];
+                printf("%c",mensaje[punteroMensaje]);
+                punteroSegmento++;
+                }
+            printf("\n");
+            return contadorLinea;
+        }
+
+    return FRACASO;
+}
 int leer(){return EXITO;}
 
 // Inicializa el ambiente para que los demás procesos
@@ -154,10 +185,7 @@ void init(int lineas){
 // Finaliza todos los procesos
 void finalizar(){
     //impresion para comprobar el estado final del segmento y los procesos
-    printf("\nEstado segmento:\n");
-    printSegmento(LLAVE_SEGMENTO);
-    printf("\nEstado writers:\n");
-    printSegmento(LLAVE_SEGMENTO_WRITERS);
+    printEstado();
     if(liberarMemoria(LLAVE_SEGMENTO) && liberarMemoria(LLAVE_SEGMENTO_DATOS)){
         //falta finalizar demás procesos
         if(!liberarMemoria(LLAVE_SEGMENTO_WRITERS)){

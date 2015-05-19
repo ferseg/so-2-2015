@@ -32,15 +32,14 @@ void ejecutarProceso(proceso *procesoActual){
   			sprintf(prefijoLog,"%s|%3d",WRITER,procesoActual->id);
   			segmentoDatosID = getMemID(LLAVE_SEGMENTO_WRITERS,NULL);
 			break;
-		case TIPO_READER://////////////por implementar
+		case TIPO_READER:
 			sprintf(tipoProceso, "%s", READER);
 			sprintf(prefijo,"1|%s|%3d",READER,procesoActual->id);
 	 		sprintf(prefijoLog,"%s|%3d",READER,procesoActual->id);
 			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS,NULL);
 		    break;
-	    case TIPO_READER_EGOISTA://por implementar
+	    case TIPO_READER_EGOISTA:
 	    	sprintf(tipoProceso, "%s", READER_EGOISTA);
-	    	sprintf(prefijo,"0|%s|%3d",READER_EGOISTA,procesoActual->id);
 	    	sprintf(prefijoLog,"%s|%3d",READER_EGOISTA,procesoActual->id);
 			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS_EGOISTAS,NULL);
 	        break;
@@ -57,23 +56,38 @@ void ejecutarProceso(proceso *procesoActual){
 					if(contadorLinea = escribir(prefijo)){
 						// Tiempo de escritura
 						procesoActual->lineaActual = contadorLinea;
-						registrar(LLAVE_SEGMENTO_WRITERS,(procesoActual->id-1),contadorLinea,prefijoLog,ESTADO_ESCRITURA);
+						registrar(segmentoDatosID,(procesoActual->id-1),contadorLinea,prefijoLog,ESTADO_ESCRITURA);
 						procesoActual->estado = ESTADO_ESCRITURA;
 						sleep(procesoActual->escritura);
 						// Tiempo de descanso
-						registrar(LLAVE_SEGMENTO_WRITERS,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
+						registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
 						procesoActual->estado = ESTADO_DESCANSO;
 						sleep(procesoActual->descanso);
 					}//////////////////////////////////////////////////////
 					//Luego de dormir se bloquean y esperan el semáforo
 					procesoActual->estado = ESTADO_BLOQUEADO;
-					registrar(LLAVE_SEGMENTO_WRITERS,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
+					registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
 					break;
 				case TIPO_READER://////////////por implementar
 
 				    break;
 			    case TIPO_READER_EGOISTA://por implementar
-			    	
+			    	///////////////////////////////////////////////////////
+					// region critica, falta sincronizar
+					if(contadorLinea = borrar()){
+						// Tiempo de escritura
+						procesoActual->lineaActual = contadorLinea;
+						registrar(segmentoDatosID,(procesoActual->id-1),contadorLinea,prefijoLog,ESTADO_LECTURA);
+						procesoActual->estado = ESTADO_ESCRITURA;
+						sleep(procesoActual->escritura);
+						// Tiempo de descanso
+						registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
+						procesoActual->estado = ESTADO_DESCANSO;
+						sleep(procesoActual->descanso);
+					}//////////////////////////////////////////////////////
+					//Luego de dormir se bloquean y esperan el semáforo
+					procesoActual->estado = ESTADO_BLOQUEADO;
+					registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
 			        break;
 			    default:
 			        break;
@@ -88,18 +102,19 @@ void ejecutarProceso(proceso *procesoActual){
 	}
 }
 
-//Inicializa los writers, recibe cantidad de writers, tiempo de escritura
-// y tiempo de descanso
-void initWriters(int cantidadWriters,int tiempoEscritura,int tiempoDescanso){
+// Inicializa los writers, recibe cantidad de writers, tiempo de escritura,
+// tiempo de descanso, la llave del segmento al que va a escribir y el tipo
+// de proceso
+void initProcesos(int cantidadProcesos,int tiempoEscritura,int tiempoDescanso,int llave,int tipo){
 	int i;
 	// Monitor de writers
-	crearMemoria(LLAVE_SEGMENTO_WRITERS,cantidadWriters);
-	pthread_t writerThread[cantidadWriters];
-	for(i=1;i<=cantidadWriters;i++){
-		proceso *nProcess = newProcess(i,tiempoEscritura,tiempoDescanso,TIPO_WRITER);
-		pthread_create(&writerThread[i-1], NULL, ejecutarProceso, nProcess);
+	crearMemoria(llave,cantidadProcesos);
+	pthread_t processThread[cantidadProcesos];
+	for(i=1;i<=cantidadProcesos;i++){
+		proceso *nProcess = newProcess(i,tiempoEscritura,tiempoDescanso,tipo);
+		pthread_create(&processThread[i-1], NULL, ejecutarProceso, nProcess);
 	}
-	for(i=0;i<cantidadWriters;i++){
-		pthread_join(writerThread[i], NULL);
+	for(i=0;i<cantidadProcesos;i++){
+		pthread_join(processThread[i], NULL);
 	}
 }

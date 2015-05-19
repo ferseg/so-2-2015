@@ -4,10 +4,10 @@
 // Registra en el log
 // aun falta escribir en el archivo, por el momento
 // el finalizador imprime el estado d los segmentos
-void registrar(int key,int id,int linea,char *prefijo,char *estado){
-	int segmentoDatosID,punteroMensaje,punteroSegmento;
+void registrar(int segmentoDatosID,int id,int linea,char *prefijo,char *estado){
+	int punteroMensaje,punteroSegmento;
 	char *segmentoDatos,*mensaje;
-	if(segmentoDatosID = getMemID(key,NULL)){
+	if(segmentoDatosID > 0){
 		segmentoDatos = getMem(segmentoDatosID);
 		punteroSegmento = id * TAMANIO_LINEAS;
         mensaje = crearMensaje(prefijo,estado,linea);
@@ -19,11 +19,26 @@ void registrar(int key,int id,int linea,char *prefijo,char *estado){
 }
 
 // Imprime un segmento a partir de su llave
-void printSegmento(int key){
-    int shmid;
-    char *shm;
-    if(shmid = getMemID(key,NULL)){
-        shm = getMem(shmid);
-        printf("%s",shm);
+void printEstado(){
+    int segmentoID,writersID,readersID,readersEID;
+    char *segmento,*writers,*readers,*readersE;
+    if(segmentoID = getMemID(LLAVE_SEGMENTO,NULL)){
+        segmento = getMem(segmentoID);
+        printf("%s%s%s%s%s\n",BORDE, TITULO_DATOS, BORDE, segmento, BORDE);
+        // ver writers
+        if(writersID = getMemID(LLAVE_SEGMENTO_WRITERS,NULL)){
+            writers = getMem(writersID);
+            printf("%s%s%s%s%s\n",BORDE, TITULO_WRITER, BORDE, writers, BORDE);
+            }
+        // ver readers
+        if(readersID = getMemID(LLAVE_SEGMENTO_READERS,NULL)){
+            readers = getMem(readersID);
+            printf("%s%s%s%s%s\n",BORDE, TITULO_READER, BORDE, readers, BORDE);
+            }
+        // ver readers egoistas
+        if(readersEID = getMemID(LLAVE_SEGMENTO_READERS_EGOISTAS,NULL)){
+            readersE = getMem(readersEID);
+            printf("%s%s%s%s%s\n",BORDE, TITULO_READER_EGOISTA, BORDE, readersE, BORDE);
+            }
         }
 }

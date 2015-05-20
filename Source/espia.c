@@ -4,23 +4,18 @@
 // Registra en el log
 // aun falta escribir en el archivo, por el momento
 // el finalizador imprime el estado d los segmentos
-//void registrar(int key,int linea,char *prefijo,proceso *procesoActual){
-void registrar(int key,int id,int linea,char *prefijo,char *estado,char *segmentoDatos){
+void registrar(int key,char *prefijo, proceso *procesoActual){
     sem_t *semLog;
     int punteroMensaje,punteroSegmento;
 	char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
+    //semLog = sem_open(SEM_LOG_NAME,0,0644,1);
     semLog = sem_open(SEM_LOG_NAME,O_CREAT,0644,1);
-    //printf("%s",segmentoDatos);
     sem_wait(semLog);
     if(getMemID(key,NULL)){
-        //punteroSegmento = (procesoActual->id-1) * TAMANIO_LINEAS;
-		punteroSegmento = id * TAMANIO_LINEAS;
-
-        //mensaje = crearMensaje(prefijo,procesoActual->estado,linea);
-        mensaje = crearMensaje(prefijo,estado,linea);
+        punteroSegmento = (procesoActual->id-1) * TAMANIO_LINEAS;
+        mensaje = crearMensaje(prefijo,procesoActual->estado,procesoActual->lineaActual);
         for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
-            //procesoActual->segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
-            segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
+            procesoActual->segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
             punteroSegmento++;
         }
 	}
@@ -31,12 +26,8 @@ void registrar(int key,int id,int linea,char *prefijo,char *estado,char *segment
 
 // Imprime un segmento a partir de su llave
 void printEstado(){
-
-    sem_t *mutex;
-    mutex = sem_open(SEM_NAME,0,0644,1);
     int segmentoID,writersID,readersID,readersEID,datosID;
     char *segmento,*writers,*readers,*readersE,*datos;
-    //sem_wait(mutex);
     if(segmentoID = getMemID(LLAVE_SEGMENTO,NULL)){
         segmento = getMem(segmentoID);
         printf("%s%s%s%s%s\n",BORDE, TITULO_DATOS, BORDE, segmento, BORDE);
@@ -63,7 +54,4 @@ void printEstado(){
             printf("%s%s%s%s%s\n",BORDE, TITULO_READER_EGOISTA, BORDE, readersE, BORDE);
             }
         }
-
-    //sem_post(mutex);
-    sem_close(mutex);
 }

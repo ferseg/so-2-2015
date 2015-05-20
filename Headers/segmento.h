@@ -13,7 +13,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
+#include "proceso.h"
 #include "constantes.h"
 #include "segmentoDatos.h"
 
@@ -33,7 +33,7 @@
 int crearMemoria(int,int);
 
 //Libera la memoria compartida a partir de su llave
-int liberarMemoria(int key);
+int liberarMemoria(int);
 
 // Obtiene el ID  del segmento compartido a partir de su llave y su tamanio
 int getMemID(int,int);
@@ -51,18 +51,23 @@ void init(int);
 void finalizar();
 
 // Encuentra la siguiente linea vacía en el segmento
-// y escribe en ella el mensaje y la cantidad de lineas,
+// y escribe en ella el mensaje
 // retorna 0 si todas las lineas estaban llenas y en caso contrario
 // el retorna el numero de la linea modificada.
-// el id debera venir en el formato 
-// 1|tipo|id dl proceso
+// recibe un prefijo, el tamaño de la memoria y el segmento 
+// compartido
 int escribir(char*,int,char*);
 
 // Escoje aleatoriamente una linea del segmento
 // y si está llena la borra. Retorna 0 si 
 // no borró nada en el segmento y el numero
 // de linea que borró en caso contrario.
-int borrar();
+// Recibe el tamaño de la memiria y el
+// segmento compartido
+int borrar(int,char*);
+
+// Lee una linea del segmento compartido
+int leer(int,char*,struct proceso*);
 
 // Retorna un char con la hora actual
 char *getTime();

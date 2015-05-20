@@ -17,8 +17,7 @@
 
 // Registra un cambio en el segmento en el log
 //aun no implementado
-//void registrar(int,int,char*,proceso*);
-void registrar(int,int,int,char*,char*,char*);
+void registrar(int,char*,proceso*);
 
 // Imprime un segmento a partir de su llave
 void printEstado();

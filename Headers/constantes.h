@@ -6,7 +6,7 @@
 #define SEM_LOG_NAME "Log"
 #define EXITO 1
 #define FRACASO 0
-#define LINEA_VACIA '0'
+#define LINEA_VACIA '_'
 #define LINEA_LLENA '1'
 #define TAMANIO_LINEAS 40
 #define LLAVE_SEGMENTO 2015

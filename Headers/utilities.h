@@ -1,6 +1,12 @@
-#ifndef UTILS_H_
-#define UTILS_H_
+/**
+* Copyrigth © 2015, All rights reserved.
+* fileManager.h
+* Author: Fernando Segovia Salgado
+*/
+#ifndef UTILITIES_H_
+#define UTILITIES_H_
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/shm.h>
@@ -12,4 +18,13 @@ int getRandomNumber(int,int);
 
 void clearString(char*, int);
 
-#endif // UTILS_H_
+FILE* openFile(char *filename, char *options);
+
+void getNextLine(FILE *file,char *singleLine);
+
+void writeInFile(FILE *file, char *message);
+
+void closeFile(FILE *file);
+
+
+#endif // UTILITIES_H_

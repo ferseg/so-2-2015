@@ -1,20 +1,38 @@
 #include "../Headers/espia.h"
 
+// Guarda un mensaje en el log
+void registrar(proceso *procesoActual){
+    FILE *fp;
+    fp=fopen("bitacora.txt", "a");
+    switch(procesoActual->tipo){
+        case TIPO_WRITER:
+            fprintf(fp, "El writer %d escribio el mensaje %s, en la linea %d, a las %s.\n\n", procesoActual->id,procesoActual->mensaje,procesoActual->lineaActual,getTime());
+            break;
+        case TIPO_READER:
+            fprintf(fp,"El lector %d leyo el mensaje...\n",procesoActual->id);
+            break;
+        case TIPO_READER_EGOISTA:
+            fprintf(fp, "El reader egoista %d borro el mensaje %s, en la linea %d, a las %s.\n\n",procesoActual->id,procesoActual->mensaje,procesoActual->lineaActual,getTime());
+            break;
+        default:
+            break;
+    }
+    fclose(fp);
+}
 
 // Registra en el log
 // aun falta escribir en el archivo, por el momento
 // el finalizador imprime el estado d los segmentos
-void registrar(int key,char *prefijo, proceso *procesoActual){
+void actualizar(int key,char *prefijo, proceso *procesoActual){
     sem_t *semLog;
     int punteroMensaje,punteroSegmento;
 	char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
-    //semLog = sem_open(SEM_LOG_NAME,0,0644,1);
     semLog = sem_open(SEM_LOG_NAME,O_CREAT,0644,1);
     sem_wait(semLog);
     if(getMemID(key,NULL)){
         punteroSegmento = (procesoActual->id-1) * TAMANIO_LINEAS;
         mensaje = crearMensaje(prefijo,procesoActual->estado,procesoActual->lineaActual);
-        for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
+        for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS ; punteroMensaje++){
             procesoActual->segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
             punteroSegmento++;
         }

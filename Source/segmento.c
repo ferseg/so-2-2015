@@ -25,6 +25,7 @@ char *getTime(){
     strftime(buffer, 100, "%Y-%m-%d %H:%M:%S", tm_info);
     char *fecha= malloc(sizeof(char)*100);clearString(&fecha,100);
     sprintf(fecha,"%s",buffer);
+
     return fecha;
 }
 
@@ -36,6 +37,7 @@ char *crearMensaje(char *prefijo,char *extra,int linea){
     char *str = (char*)malloc(TAMANIO_LINEAS+2);
     sprintf(str,"%s",extra);
     sprintf(mensaje,"|%s|%3d|%s|\n",prefijo,linea,str);
+    //sprintf(mensaje,"|%s|%3d|%s|",prefijo,linea,str);
     free(str);
     /*
 |1|writer |  1|  1|2015-05-18 13:53:57|
@@ -48,6 +50,7 @@ _0_____________________________________
 char *crearMensajeVacio(){
     char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
     sprintf(mensaje,"%s","|_____________________________________|\n");
+    //sprintf(mensaje,"%s","|_____________________________________|");
     return mensaje;
 }
 
@@ -116,19 +119,23 @@ int liberarMemoria(int key){
 // el retorna el numero de la linea modificada.
 // recibe un prefijo, el tamaño de la memoria y el segmento 
 // compartido
-int escribir(char *prefijo,int tamanioMem,char *s){
+int escribir(char *prefijo,int tamanioMem,char *segmento,proceso *procesoActual){
     int punteroSegmento,contadorLinea;
     contadorLinea = 1;
     for(punteroSegmento = 1; punteroSegmento < tamanioMem; ){
-        if(s[punteroSegmento] == LINEA_VACIA){
+        if(segmento[punteroSegmento] == LINEA_VACIA){
             int punteroMensaje;
             char *mensaje = (char*)malloc(TAMANIO_LINEAS);
+            char *mensaje2 = (char*)malloc(TAMANIO_LINEAS);
             mensaje = crearMensaje(prefijo,getTime(),contadorLinea);
-            for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS ; punteroMensaje++){
-                s[punteroSegmento-1] = mensaje[punteroMensaje];
+            for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS - 1; punteroMensaje++){
+                mensaje2[punteroMensaje] = segmento[punteroSegmento-1];
+                segmento[punteroSegmento-1] = mensaje[punteroMensaje];
                 punteroSegmento++;
                 }
-            free(mensaje);
+            sprintf(procesoActual->mensaje, mensaje);
+
+            free(mensaje);free(mensaje2);
             return contadorLinea;
         }
         punteroSegmento += TAMANIO_LINEAS;
@@ -143,47 +150,57 @@ int escribir(char *prefijo,int tamanioMem,char *s){
 // de linea que borró en caso contrario.
 // Recibe el tamaño de la memiria y el
 // segmento compartido
-int borrar(int tamanioMem,char *s){
+int borrar(int tamanioMem,char *segmento,proceso *procesoActual){
     int punteroSegmento,contadorLinea;
     contadorLinea = getRandomNumber(0,(tamanioMem/TAMANIO_LINEAS)-1);
     punteroSegmento = 1 + (contadorLinea * TAMANIO_LINEAS);
-    if(s[punteroSegmento] == LINEA_LLENA){
+    if(segmento[punteroSegmento] == LINEA_LLENA){
         int punteroMensaje;
         char *mensaje = (char*)malloc(TAMANIO_LINEAS);
+        char *mensaje2 = (char*)malloc(TAMANIO_LINEAS);
         mensaje = crearMensajeVacio();
-        for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
-            s[punteroSegmento-1] = mensaje[punteroMensaje];
+        for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS - 1 ; punteroMensaje++){
+            mensaje2[punteroMensaje] = segmento[punteroSegmento-1];
+            segmento[punteroSegmento-1] = mensaje[punteroMensaje];
             punteroSegmento++;
             }
-        free(mensaje);
+        sprintf(procesoActual->mensaje, mensaje2);
+
+        free(mensaje);free(mensaje2);
         return contadorLinea+1;
     }
     return FRACASO;
 }
 
-
+// Lee una linea del segmento compartido
 int leer(int tamanioMem,char *s,proceso *procesoActual){
-    //proceso *procesoActual;
-
     int punteroSegmento,contadorLinea;
     contadorLinea  = procesoActual->lineaActual;
     punteroSegmento = 1 + ((contadorLinea-1)*TAMANIO_LINEAS);
+    char *prefijoLog = (char*)malloc(TAMANIO_LINEAS+2);
 
     if(s[punteroSegmento] == LINEA_LLENA){
         int punteroMensaje;
         char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
-
+        //printf("%c\n",s[punteroSegmento]);
         for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS ; punteroMensaje++){
             mensaje[punteroMensaje] = s[punteroSegmento-1];
             punteroSegmento++;
             }
 
-        //sprintf(prefijoLog,"%s|%3d",READER,procesoActual->id);
-        //registrar(LLAVE_SEGMENTO_READERS,prefijoLog,procesoActual);
-        registrar(LLAVE_SEGMENTO_READERS,mensaje,procesoActual);
+        procesoActual->estado = ESTADO_LECTURA;
+        //sprintf("%s",mensaje);
+        //registrar(LLAVE_SEGMENTO_READERS,mensaje,procesoActual);
+        
+        sprintf(prefijoLog,"%s|%3d",READER,procesoActual->id);
+        actualizar(LLAVE_SEGMENTO_READERS,prefijoLog,procesoActual);
+        registrar(procesoActual);
         sleep(procesoActual->escritura);
         free(mensaje);
         procesoActual->lineaActual += 1;
+        if(procesoActual->lineaActual == (tamanioMem/TAMANIO_LINEAS)){
+            procesoActual->lineaActual = 1;
+            }
         return contadorLinea;
         }
     procesoActual->lineaActual = 1;
@@ -199,6 +216,9 @@ void init(int lineas){
     semLog = sem_open(SEM_LOG_NAME,O_CREAT,0644,1);
     if(crearMemoria(LLAVE_SEGMENTO_DATOS,2) && crearMemoria(LLAVE_SEGMENTO,lineas)){
         setCantidadLineas(lineas);
+        FILE *fp = fopen("bitacora.txt", "w");
+        fprintf(fp, "Se inicializo el programa a las: %s.\n", getTime());
+        fclose(fp);
         printf(MENSAJE_CREACION_EXITOSA);
     }
     else{
@@ -216,9 +236,7 @@ void finalizar(){
     mutex = sem_open(SEM_NAME,O_CREAT,0644,1);
     semLog = sem_open(SEM_LOG_NAME,0,0644,1);
     
-    // mutex = sem_open(SEM_NAME,0,0644,1);
-    // semLog = sem_open(SEM_LOG_NAME,O_CREAT,0644,1);
-    sem_wait(mutex);
+    //sem_wait(mutex);
     if(liberarMemoria(LLAVE_SEGMENTO) && liberarMemoria(LLAVE_SEGMENTO_DATOS)){
         //falta finalizar demás procesos
         if(!liberarMemoria(LLAVE_SEGMENTO_WRITERS)){
@@ -235,7 +253,7 @@ void finalizar(){
     else{
         printf(MENSAJE_FINALIZACION_FALLIDA);
     }
-    sem_post(mutex);
+    //sem_post(mutex);
     sem_close(mutex);
     sem_close(semLog);
     sem_unlink(SEM_NAME);

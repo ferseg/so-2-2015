@@ -26,6 +26,7 @@ typedef struct proceso
     int lineaActual;
     char *estado;
     char *segmentoDatos;
+    char *mensaje;
 }proceso;
 
 // Retorna un nuevo writer

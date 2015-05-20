@@ -56,7 +56,7 @@ void finalizar();
 // el retorna el numero de la linea modificada.
 // recibe un prefijo, el tamaño de la memoria y el segmento 
 // compartido
-int escribir(char*,int,char*);
+int escribir(char*,int,char*,struct proceso*);
 
 // Escoje aleatoriamente una linea del segmento
 // y si está llena la borra. Retorna 0 si 
@@ -64,7 +64,7 @@ int escribir(char*,int,char*);
 // de linea que borró en caso contrario.
 // Recibe el tamaño de la memiria y el
 // segmento compartido
-int borrar(int,char*);
+int borrar(int,char*,struct proceso*);
 
 // Lee una linea del segmento compartido
 int leer(int,char*,struct proceso*);

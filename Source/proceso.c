@@ -15,6 +15,7 @@ proceso* newProcess(int pId, int pEscritura,int pDescanso,int pTipo,char *pSegme
   	newProcess->lineaActual = 1;
   	newProcess->estado = ESTADO_DESCANSO;
   	newProcess->segmentoDatos = pSegmentoDatos;
+  	newProcess->mensaje = (char*)malloc(TAMANIO_LINEAS+10);
 	return newProcess;
 }
 
@@ -38,6 +39,8 @@ void ejecutarProceso(proceso *procesoActual){
 			break;
 		case TIPO_READER:
 			sprintf(tipoProceso, "%s", READER);
+			sprintf(prefijoLog,"%s|%3d",READER,procesoActual->id);
+			llaveSegmento = LLAVE_SEGMENTO_READERS;
 		    break;
 	    case TIPO_READER_EGOISTA:
 	    	sprintf(tipoProceso, "%s", READER_EGOISTA);
@@ -56,11 +59,6 @@ void ejecutarProceso(proceso *procesoActual){
 		mutex = sem_open(SEM_NAME,O_CREAT,0644,1);
 		}
 
-	// shmid = getMemID(LLAVE_SEGMENTO,NULL);
-	// shm = getMem(shmid);
-	// tamanioMem = getCantidadLineas() * TAMANIO_LINEAS;
-	// mutex = sem_open(SEM_LOG_NAME,0,0644,1);
-
 	while(EXITO){
 		// Inicializamos el semaforo
 		sem_wait(mutex);
@@ -68,38 +66,39 @@ void ejecutarProceso(proceso *procesoActual){
 			if(tipo == TIPO_WRITER){
 				/////////////////////////////////////////////////////
 				//region critica
-				if(contadorLinea = escribir(prefijo,tamanioMem,shm)){
+				if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
 					// Tiempo de escritura
 					procesoActual->lineaActual = contadorLinea;
 					procesoActual->estado = ESTADO_ESCRITURA;
-					registrar(llaveSegmento,prefijoLog,procesoActual);
+					actualizar(llaveSegmento,prefijoLog,procesoActual);
+					registrar(procesoActual);
 					sleep(procesoActual->escritura);
 					}
 				}
 			else if(tipo == TIPO_READER){
 				leer(tamanioMem,shm,procesoActual);
-				//leer(tamanioMem,shm);
 				}
 			else if(tipo == TIPO_READER_EGOISTA){
 				/////////////////////////////////////////////////////
 				//region critica
-				if(contadorLinea = borrar(tamanioMem,shm)){
+				if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
 					// Tiempo de escritura
 					procesoActual->lineaActual = contadorLinea;
 					procesoActual->estado = ESTADO_LECTURA;
-					registrar(llaveSegmento,prefijoLog,procesoActual);
+					actualizar(llaveSegmento,prefijoLog,procesoActual);
+					registrar(procesoActual);
 					sleep(procesoActual->escritura);
 					}
 				}
 				sem_post(mutex);
 				// Tiempo de descanso
 				procesoActual->estado = ESTADO_DESCANSO;
-				registrar(llaveSegmento,prefijoLog,procesoActual);
-				//sleep(procesoActual->descanso);
+				actualizar(llaveSegmento,prefijoLog,procesoActual);
+				sleep(procesoActual->descanso);
 				/////////////////////////////////////////////////////
 				// Luego de dormir se bloquean y esperan el semáforo
 				procesoActual->estado = ESTADO_BLOQUEADO;
-				registrar(llaveSegmento,prefijoLog,procesoActual);
+				actualizar(llaveSegmento,prefijoLog,procesoActual);
 			}
 		else{
 			// Al no encontrar memoria compartida

@@ -1,0 +1,16 @@
+Se inicializo el programa a las: 2015-05-20 08:57:20.
+El writer 1 escribio el mensaje |1|writer |  1|  1|2015-05-20 08:57:23|
+, en la linea 1, a las 2015-05-20 08:57:23.
+
+El writer 4 escribio el mensaje |1|writer |  4|  2|2015-05-20 08:57:24|
+, en la linea 2, a las 2015-05-20 08:57:24.
+
+El writer 2 escribio el mensaje |1|writer |  2|  3|2015-05-20 08:57:25|
+, en la linea 3, a las 2015-05-20 08:57:25.
+
+El writer 3 escribio el mensaje |1|writer |  3|  4|2015-05-20 08:57:26|
+, en la linea 4, a las 2015-05-20 08:57:26.
+
+El writer 1 escribio el mensaje |1|writer |  1|  5|2015-05-20 08:57:27|
+, en la linea 5, a las 2015-05-20 08:57:27.
+

@@ -6,10 +6,11 @@
 INIT_FILES = Source/main-inicializador.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
 WRITER_FILES = Source/main-writer.c Source/proceso.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
 READER_E_FILES = Source/main-readerEgoista.c Source/proceso.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
+SPY_FILES = Source/main-espia.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
 FINAL_FILES = Source/main-finalizador.c Source/inicializador.c Source/segmentoDatos.c Source/espia.c Source/utilities.c
 
 #Librerías
-CFLAGS = -w -I ../Hearders #-Wall
+CFLAGS = -g -w -I ../Hearders #-Wall
 CC = gcc
 LIBS = -lpthread -lm
 
@@ -17,6 +18,7 @@ LIBS = -lpthread -lm
 INIT_NAME = bin/inicializador
 FINAL_NAME = bin/finalizador
 WRITER_NAME = bin/writer
+SPY_NAME = bin/espia
 READER_E_NAME = bin/readerE
 
 inicializador:
@@ -27,6 +29,9 @@ writer:
 
 readerE:
 	$(CC) $(CFLAGS) $(READER_E_FILES) -o $(READER_E_NAME) $(LIBS)
+
+espia:
+	$(CC) $(CFLAGS) $(SPY_FILES) -o $(SPY_NAME) $(LIBS)
 
 finalizador:
 	$(CC) $(CFLAGS) $(FINAL_FILES) -o $(FINAL_NAME) $(LIBS)

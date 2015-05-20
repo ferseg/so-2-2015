@@ -4,8 +4,9 @@
 // Obtiene la cantidad de lineas del segmento
 int getCantidadLineas(){
     int shmid = getMemID(LLAVE_SEGMENTO_DATOS,NULL);
-    char *shm = getMem(shmid);
-    return atoi(shm);
+	char *shm = malloc(sizeof(char)*2000);
+	shm = getMem(shmid);
+	return atoi(shm);
 }
 
 // Guarda la cantidad de lineas del segmento

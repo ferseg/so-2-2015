@@ -51,12 +51,12 @@ void init(int);
 void finalizar();
 
 // Encuentra la siguiente linea vacía en el segmento
-// y escribe en ella el mensaje, retorna 0 si todas 
-// las lineas estaban llenas y en caso contrario
+// y escribe en ella el mensaje y la cantidad de lineas,
+// retorna 0 si todas las lineas estaban llenas y en caso contrario
 // el retorna el numero de la linea modificada.
 // el id debera venir en el formato 
 // 1|tipo|id dl proceso
-int escribir(char*);
+int escribir(char*,int,char*);
 
 // Escoje aleatoriamente una linea del segmento
 // y si está llena la borra. Retorna 0 si 

@@ -19,91 +19,131 @@ proceso* newProcess(int pId, int pEscritura,int pDescanso,int pTipo){
 
 // Hilo encargado de la ejecución de los procesos
 void ejecutarProceso(proceso *procesoActual){
-	int shmid, contadorLinea;
-	char *prefijo = malloc(sizeof(char)*50);
-	char *prefijoLog = malloc(sizeof(char)*50);
+	int shmid, llaveSegmento,contadorLinea, tipo;
+	char *prefijo = malloc(sizeof(char) * TAMANIO_LINEAS);
+	char *prefijoLog = malloc(sizeof(char) * TAMANIO_LINEAS);
+	char *shm,*segmentoDatos;
     sem_t *mutex;
 	mutex = sem_open(SEM_NAME,0,0644,1);
 	clearString(&prefijo, 50);
 	clearString(&prefijoLog, 50);
 
-	char *segmentoDatos;
-	int segmentoDatosID,punteroMensaje,punteroSegmento;
-	char *tipoProceso = malloc(sizeof(char)*30);clearString(&tipoProceso, 30);
+	int segmentoDatosID,punteroMensaje,punteroSegmento,tamanioMem;
+	char *tipoProceso = malloc(sizeof(char)*30);//clearString(&tipoProceso, 30);
+	tipo = procesoActual->tipo;
+	tamanioMem = getCantidadLineas() * TAMANIO_LINEAS;
 	switch(procesoActual->tipo){
 	    case TIPO_WRITER:
 	    	sprintf(tipoProceso,"%s", WRITER);
   			sprintf(prefijo,"1|%s|%3d",WRITER,procesoActual->id);
   			sprintf(prefijoLog,"%s|%3d",WRITER,procesoActual->id);
-  			segmentoDatosID = getMemID(LLAVE_SEGMENTO_WRITERS,NULL);
+  			llaveSegmento = LLAVE_SEGMENTO_WRITERS;
 			break;
 		case TIPO_READER:
 			sprintf(tipoProceso, "%s", READER);
 			sprintf(prefijo,"1|%s|%3d",READER,procesoActual->id);
 	 		sprintf(prefijoLog,"%s|%3d",READER,procesoActual->id);
-			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS,NULL);
+			llaveSegmento = LLAVE_SEGMENTO_READERS;
 		    break;
 	    case TIPO_READER_EGOISTA:
 	    	sprintf(tipoProceso, "%s", READER_EGOISTA);
 	    	sprintf(prefijoLog,"%s|%3d",READER_EGOISTA,procesoActual->id);
-			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS_EGOISTAS,NULL);
+			llaveSegmento = LLAVE_SEGMENTO_READERS_EGOISTAS;
 	        break;
 	    default:
 	        break;
 	}
+	shmid = getMemID(LLAVE_SEGMENTO,tamanioMem);
+	segmentoDatosID = getMemID(llaveSegmento,NULL);
+	shm = getMem(shmid);
+	segmentoDatos = getMem(segmentoDatosID);
 
 	while(EXITO){
 		// Inicializamos el semaforo
 		sem_wait(mutex);
 		if(shmid = getMemID(LLAVE_SEGMENTO,NULL)){
-			switch(procesoActual->tipo){
-			    case TIPO_WRITER:
-					///////////////////////////////////////////////////////
-					// region critica, falta sincronizar
-					if(contadorLinea = escribir(prefijo)){
-						// Tiempo de escritura
-						procesoActual->lineaActual = contadorLinea;
-						registrar(segmentoDatosID,(procesoActual->id)-1,contadorLinea,prefijoLog,ESTADO_ESCRITURA);
-						procesoActual->estado = ESTADO_ESCRITURA;
-						sleep(procesoActual->escritura);
-						sem_post(mutex);
-						// Tiempo de descanso
-						registrar(segmentoDatosID,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
-						procesoActual->estado = ESTADO_DESCANSO;
-						sleep(procesoActual->descanso);
+			if(tipo == TIPO_WRITER){
+				/////////////////////////////////////////////////////
+				//region critica
+				if((contadorLinea = escribir(prefijo,tamanioMem,shm)) > 0){
+					// Tiempo de escritura
+					procesoActual->lineaActual = contadorLinea;
+					registrar(llaveSegmento,(procesoActual->id)-1,contadorLinea,prefijoLog,ESTADO_ESCRITURA,segmentoDatos);
+					procesoActual->estado = ESTADO_ESCRITURA;
+					sleep(procesoActual->escritura);
 					}
-					else{
-					 	sem_post(mutex);
-					}
-					//////////////////////////////////////////////////////
-					//Luego de dormir se bloquean y esperan el semáforo
-					procesoActual->estado = ESTADO_BLOQUEADO;
-					registrar(segmentoDatosID,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
-					break;
-				case TIPO_READER://////////////por implementar
 
-				    break;
-			    case TIPO_READER_EGOISTA://por implementar
-			    	///////////////////////////////////////////////////////
-					// region critica, falta sincronizar
-					if(contadorLinea = borrar()){
-						// Tiempo de escritura
-						procesoActual->lineaActual = contadorLinea;
-						registrar(segmentoDatosID,(procesoActual->id-1),contadorLinea,prefijoLog,ESTADO_LECTURA);
-						procesoActual->estado = ESTADO_LECTURA;
-						sleep(procesoActual->escritura);
-						// Tiempo de descanso
-						registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
-						procesoActual->estado = ESTADO_DESCANSO;
-						sleep(procesoActual->descanso);
-					}//////////////////////////////////////////////////////
-					//Luego de dormir se bloquean y esperan el semáforo
-					procesoActual->estado = ESTADO_BLOQUEADO;
-					registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
-			        break;
-			    default:
-			        break;
+				sem_post(mutex);
+				// Tiempo de descanso
+				registrar(llaveSegmento,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO,segmentoDatos);
+				procesoActual->estado = ESTADO_DESCANSO;
+				//sleep(procesoActual->descanso);
+				////////////////////////////////////////////////////
+				// // Luego de dormir se bloquean y esperan el semáforo
+				procesoActual->estado = ESTADO_BLOQUEADO;
+				registrar(llaveSegmento,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO,segmentoDatos);
+				//printf("%d\n",contadorLinea);
 			}
+
+
+			// switch(tipo){
+			//     case TIPO_WRITER:
+			// 		///////////////////////////////////////////////////////
+			// 		// region critica, falta sincronizar
+			// 		// if(contadorLinea = escribir(prefijo)){
+			// 		// 	// Tiempo de escritura
+			// 		// 	procesoActual->lineaActual = contadorLinea;
+			// 		// 	registrar(segmentoDatosID,(procesoActual->id)-1,contadorLinea,prefijoLog,ESTADO_ESCRITURA);
+			// 		// 	procesoActual->estado = ESTADO_ESCRITURA;
+			// 		// 	sleep(procesoActual->escritura);
+			// 		// 	sem_post(mutex);
+			// 		// 	// Tiempo de descanso
+			// 		// 	registrar(segmentoDatosID,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
+			// 		// 	procesoActual->estado = ESTADO_DESCANSO;
+			// 		// 	sleep(procesoActual->descanso);
+			// 		// }
+			// 		// else{
+			// 		//  	sem_post(mutex);
+			// 		// }
+			//     	printf("0\n");
+			//     	sem_post(mutex);
+			// 		//////////////////////////////////////////////////////
+			// 		//Luego de dormir se bloquean y esperan el semáforo
+			// 		procesoActual->estado = ESTADO_BLOQUEADO;
+			// 		registrar(segmentoDatosID,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
+			// 		break;
+			// 	case TIPO_READER://////////////por implementar
+
+			//     	sem_post(mutex);
+			// 	    break;
+			//     case TIPO_READER_EGOISTA://por implementar
+			//     	///////////////////////////////////////////////////////
+			// 		// region critica, falta sincronizar
+			// 		// if(contadorLinea = borrar()){
+			// 		// 	// Tiempo de escritura
+			// 		// 	procesoActual->lineaActual = contadorLinea;
+			// 		// 	registrar(segmentoDatosID,(procesoActual->id-1),contadorLinea,prefijoLog,ESTADO_LECTURA);
+			// 		// 	procesoActual->estado = ESTADO_LECTURA;
+			// 		// 	sleep(procesoActual->escritura);
+			// 		// 	// Tiempo de descanso
+			// 		// 	registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO);
+			// 		// 	procesoActual->estado = ESTADO_DESCANSO;
+			// 		// 	sleep(procesoActual->descanso);
+			// 		// }
+
+			//     	sem_post(mutex);
+			// 		//////////////////////////////////////////////////////
+			// 		//Luego de dormir se bloquean y esperan el semáforo
+			// 		// procesoActual->estado = ESTADO_BLOQUEADO;
+			// 		// registrar(segmentoDatosID,(procesoActual->id-1),procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO);
+			//         break;
+			//     default:
+			//     	sem_post(mutex);
+			//         break;
+			// }
+
+
+
 		}
 		else{
 			// Al no encontrar memoria compartida
@@ -111,7 +151,7 @@ void ejecutarProceso(proceso *procesoActual){
 			sem_post(mutex);
 			sem_close(mutex);
 			printf("El %s %d fue finalizado.\n",tipoProceso,procesoActual->id);////////////////////////////////////
-		    pthread_exit(0);
+		    break;
 			//falta escribir en bitácora
 		}
 	}

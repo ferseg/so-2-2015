@@ -1,4 +1,4 @@
-#include "../Headers/inicializador.h"
+#include "../Headers/segmento.h"
 
 // Obtiene el ID  del segmento compartido a partir de su llave y su tamanio
 int getMemID(int key,int tamanio_mem){

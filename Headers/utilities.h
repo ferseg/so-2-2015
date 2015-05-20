@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/shm.h>
-#include "inicializador.h"
+#include "segmento.h"
 #include "constantes.h"
 #include "segmentoDatos.h"
 

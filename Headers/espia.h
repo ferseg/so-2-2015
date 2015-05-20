@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/shm.h>
-#include "inicializador.h"
+#include "proceso.h"
+#include "segmento.h"
 #include "constantes.h"
 #include "segmentoDatos.h"
 
@@ -16,6 +17,7 @@
 
 // Registra un cambio en el segmento en el log
 //aun no implementado
+//void registrar(int,int,char*,proceso*);
 void registrar(int,int,int,char*,char*,char*);
 
 // Imprime un segmento a partir de su llave

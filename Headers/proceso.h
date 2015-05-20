@@ -1,12 +1,12 @@
-#ifndef WRITER_H_
-#define WRITER_H_
+#ifndef PROCESO_H_
+#define PROCESO_H_
 
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/shm.h>
 #include <pthread.h>
+#include "segmento.h"
 #include "constantes.h"
-#include "inicializador.h"
 
 #define WRITER "writer "
 #define READER "reader "
@@ -25,6 +25,7 @@ typedef struct proceso
     int tipo;
     int lineaActual;
     char *estado;
+    char *segmentoDatos;
 }proceso;
 
 // Retorna un nuevo writer
@@ -32,7 +33,7 @@ typedef struct proceso
 // Tipo 0 = Writer
 // 		1 = Reader
 //		2 = Reader egoista
-proceso* newProcess(int,int,int,int);
+proceso* newProcess(int,int,int,int,char*);
 
 // Inicializa los writers, recibe cantidad de writers, tiempo de escritura,
 // tiempo de descanso, la llave del segmento al que va a escribir y el tipo
@@ -42,4 +43,4 @@ void initProcess(int,int,int,int,int);
 // Hilo encargado de la ejecución del writer
 void ejecutarProceso(proceso*);
 
-#endif // WRITER_H_
+#endif // PROCESO_H_

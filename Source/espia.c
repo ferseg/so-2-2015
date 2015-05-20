@@ -4,19 +4,24 @@
 // Registra en el log
 // aun falta escribir en el archivo, por el momento
 // el finalizador imprime el estado d los segmentos
+//void registrar(int key,int linea,char *prefijo,proceso *procesoActual){
 void registrar(int key,int id,int linea,char *prefijo,char *estado,char *segmentoDatos){
     sem_t *semLog;
     int punteroMensaje,punteroSegmento;
-    //char *mensaje = malloc(sizeof(char) * TAMANIO_LINEAS);//clearString(&mensaje,TAMANIO_LINEAS);
 	char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
     semLog = sem_open(SEM_LOG_NAME,O_CREAT,0644,1);
+    //printf("%s",segmentoDatos);
     sem_wait(semLog);
     if(getMemID(key,NULL)){
+        //punteroSegmento = (procesoActual->id-1) * TAMANIO_LINEAS;
 		punteroSegmento = id * TAMANIO_LINEAS;
+
+        //mensaje = crearMensaje(prefijo,procesoActual->estado,linea);
         mensaje = crearMensaje(prefijo,estado,linea);
         for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS; punteroMensaje++){
-             segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
-             punteroSegmento++;
+            //procesoActual->segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
+            segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
+            punteroSegmento++;
         }
 	}
     free(mensaje);

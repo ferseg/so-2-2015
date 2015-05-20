@@ -5,8 +5,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/shm.h>
+#include "segmento.h"
 #include "constantes.h"
-#include "inicializador.h"
+
 
 // Obtiene la cantidad de lineas del segmento
 int getCantidadLineas();

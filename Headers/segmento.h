@@ -1,5 +1,5 @@
-#ifndef INICIALIZADOR_H_
-#define INICIALIZADOR_H_
+#ifndef SEGMENTO_H_
+#define SEGMENTO_H_
 
 #include <stdio.h>
 #include <unistd.h>
@@ -72,4 +72,4 @@ char *getTime();
 // y la linea q modifico
 char *crearMensaje(char*,char*,int);
 
-#endif // INICIALIZADOR_H_
+#endif // SEGMENTO_H_

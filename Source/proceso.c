@@ -6,7 +6,7 @@
 // Tipo 0 = Writer
 // 		1 = Reader
 //		2 = Reader egoista
-proceso* newProcess(int pId, int pEscritura,int pDescanso,int pTipo){
+proceso* newProcess(int pId, int pEscritura,int pDescanso,int pTipo,char *pSegmentoDatos){
 	proceso *newProcess = malloc(sizeof(proceso));
   	newProcess->id = pId;
   	newProcess->escritura = pEscritura;
@@ -14,22 +14,21 @@ proceso* newProcess(int pId, int pEscritura,int pDescanso,int pTipo){
   	newProcess->tipo = pTipo;
   	newProcess->lineaActual = 0;
   	newProcess->estado = ESTADO_DESCANSO;
+  	newProcess->segmentoDatos = pSegmentoDatos;
 	return newProcess;
 }
 
 // Hilo encargado de la ejecución de los procesos
 void ejecutarProceso(proceso *procesoActual){
-	int shmid, llaveSegmento,contadorLinea, tipo;
-	char *prefijo = malloc(sizeof(char) * TAMANIO_LINEAS);
-	char *prefijoLog = malloc(sizeof(char) * TAMANIO_LINEAS);
+	int shmid, llaveSegmento, contadorLinea, tipo;
+	char *prefijo = (char*)malloc(TAMANIO_LINEAS);
+	char *prefijoLog = (char*)malloc(TAMANIO_LINEAS);
 	char *shm,*segmentoDatos;
     sem_t *mutex;
 	mutex = sem_open(SEM_NAME,0,0644,1);
-	// clearString(&prefijo, 50);
-	// clearString(&prefijoLog, 50);
 
-	int segmentoDatosID,punteroMensaje,punteroSegmento,tamanioMem;
-	char *tipoProceso = malloc(sizeof(char)*30);//clearString(&tipoProceso, 30);
+	int tamanioMem;
+	char *tipoProceso = (char*)malloc(30);
 	tipo = procesoActual->tipo;
 	tamanioMem = getCantidadLineas() * TAMANIO_LINEAS;
 	switch(procesoActual->tipo){
@@ -54,35 +53,35 @@ void ejecutarProceso(proceso *procesoActual){
 	        break;
 	}
 	shmid = getMemID(LLAVE_SEGMENTO,tamanioMem);
-	segmentoDatosID = getMemID(llaveSegmento,NULL);
 	shm = getMem(shmid);
-	segmentoDatos = getMem(segmentoDatosID);
 
 	while(EXITO){
 		// Inicializamos el semaforo
 		sem_wait(mutex);
-		if(shmid = getMemID(LLAVE_SEGMENTO,NULL)){
+		if(getMemID(LLAVE_SEGMENTO,NULL)){
 			if(tipo == TIPO_WRITER){
 				/////////////////////////////////////////////////////
 				//region critica
 				if((contadorLinea = escribir(prefijo,tamanioMem,shm)) > 0){
 					// Tiempo de escritura
 					procesoActual->lineaActual = contadorLinea;
-					registrar(llaveSegmento,(procesoActual->id)-1,contadorLinea,prefijoLog,ESTADO_ESCRITURA,segmentoDatos);
 					procesoActual->estado = ESTADO_ESCRITURA;
+				//registrar(llaveSegmento,contadorLinea,prefijoLog,procesoActual);
+					registrar(llaveSegmento,(procesoActual->id)-1,contadorLinea,prefijoLog,ESTADO_ESCRITURA,procesoActual->segmentoDatos);
 					sleep(procesoActual->escritura);
 					}
 
 				sem_post(mutex);
 				// Tiempo de descanso
-				registrar(llaveSegmento,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO,segmentoDatos);
 				procesoActual->estado = ESTADO_DESCANSO;
+				//registrar(llaveSegmento,contadorLinea,prefijoLog,procesoActual);
+				registrar(llaveSegmento,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_DESCANSO,procesoActual->segmentoDatos);
 				//sleep(procesoActual->descanso);
 				////////////////////////////////////////////////////
 				// // Luego de dormir se bloquean y esperan el semáforo
 				procesoActual->estado = ESTADO_BLOQUEADO;
-				registrar(llaveSegmento,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO,segmentoDatos);
-				//printf("%d\n",contadorLinea);
+				//registrar(llaveSegmento,contadorLinea,prefijoLog,procesoActual);
+				registrar(llaveSegmento,(procesoActual->id)-1,procesoActual->lineaActual,prefijoLog,ESTADO_BLOQUEADO,procesoActual->segmentoDatos);
 			}
 
 
@@ -161,12 +160,27 @@ void ejecutarProceso(proceso *procesoActual){
 // tiempo de descanso, la llave del segmento al que va a escribir y el tipo
 // de proceso
 void initProcesos(int cantidadProcesos,int tiempoEscritura,int tiempoDescanso,int llave,int tipo){
-	int i;
-	// Monitor de writers
+	int i,segmentoDatosID;
+	char *segmentoDatos;
+	// Monitor
+	switch(tipo){
+		case TIPO_WRITER:
+			segmentoDatosID = getMemID(LLAVE_SEGMENTO_WRITERS,cantidadProcesos);
+			break;
+		case TIPO_READER:
+			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS,cantidadProcesos);
+			break;
+		case TIPO_READER_EGOISTA:
+			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS_EGOISTAS,cantidadProcesos);
+			break;
+		default:
+			break;
+		}
+	segmentoDatos = getMem(segmentoDatosID);
 	crearMemoria(llave,cantidadProcesos);
 	pthread_t processThread[cantidadProcesos];
 	for(i=1;i<=cantidadProcesos;i++){
-		proceso *nProcess = newProcess(i,tiempoEscritura,tiempoDescanso,tipo);
+		proceso *nProcess = newProcess(i,tiempoEscritura,tiempoDescanso,tipo,segmentoDatos);
 		pthread_create(&processThread[i-1], NULL, ejecutarProceso, nProcess);
 	}
 	for(i=0;i<cantidadProcesos;i++){

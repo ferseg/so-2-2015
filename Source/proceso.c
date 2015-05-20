@@ -25,8 +25,8 @@ void ejecutarProceso(proceso *procesoActual){
 	char *shm,*segmentoDatos;
     sem_t *mutex;
 	mutex = sem_open(SEM_NAME,0,0644,1);
-	clearString(&prefijo, 50);
-	clearString(&prefijoLog, 50);
+	// clearString(&prefijo, 50);
+	// clearString(&prefijoLog, 50);
 
 	int segmentoDatosID,punteroMensaje,punteroSegmento,tamanioMem;
 	char *tipoProceso = malloc(sizeof(char)*30);//clearString(&tipoProceso, 30);

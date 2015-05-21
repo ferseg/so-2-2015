@@ -72,10 +72,10 @@ void ejecutarProceso(proceso *procesoActual){
 				sem_wait(mutex);
 				/////////////////////////////////////////////////////
 				//region critica
-				if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
+				if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual) && getMemID(LLAVE_SEGMENTO,NULL)){
 					// Tiempo de escritura
 					sem_wait(semDatos);
-					setLectura(0);
+					setLectura(0);decReader();
 
 					sem_post(semDatos);
 					procesoActual->lineaActual = contadorLinea;
@@ -91,7 +91,7 @@ void ejecutarProceso(proceso *procesoActual){
 				}
 			else if(tipo == TIPO_READER){
 				//sem_post(mutex);
-				sem_wait(semDatos);
+				sem_wait(semDatos);decReader();
 				if(getLectura()){
 					sem_post(semDatos);
 					leer(tamanioMem,shm,procesoActual);
@@ -104,18 +104,20 @@ void ejecutarProceso(proceso *procesoActual){
 				/////////////////////////////////////////////////////
 				//region critica
 				sem_wait(mutex);
-				if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
+				if(contadorLinea = borrar(tamanioMem,shm,procesoActual) && getMemID(LLAVE_SEGMENTO,NULL)){
 					// Tiempo de escritura
 					sem_wait(semDatos);
-					setLectura(0);
+					if(incReader()<3){
+						setLectura(0);
 
-					procesoActual->lineaActual = contadorLinea;
-					procesoActual->estado = ESTADO_LECTURA;
-					actualizar(llaveSegmento,prefijoLog,procesoActual);
-					registrar(procesoActual);
-					sleep(procesoActual->escritura);
+						procesoActual->lineaActual = contadorLinea;
+						procesoActual->estado = ESTADO_LECTURA;
+						actualizar(llaveSegmento,prefijoLog,procesoActual);
+						registrar(procesoActual);
+						sleep(procesoActual->escritura);
 
-					setLectura(1);
+						setLectura(1);
+						}
 					sem_post(semDatos);
 					}
 				sem_post(mutex);

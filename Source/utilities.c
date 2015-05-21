@@ -5,6 +5,9 @@
 */
 #include "../Headers/utilities.h"
 
+void guardarBuffer(char* destino,char* buffer,int punteroMensaje,int tamanio){
+	strncpy(&destino[punteroMensaje], buffer, tamanio);
+}
 
 int getRandomNumber(int pMinNum, int pMaxNum){
 	srand ( time(NULL) );

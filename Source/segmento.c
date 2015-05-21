@@ -124,18 +124,13 @@ int escribir(char *prefijo,int tamanioMem,char *segmento,proceso *procesoActual)
     contadorLinea = 1;
     for(punteroSegmento = 1; punteroSegmento < tamanioMem; ){
         if(segmento[punteroSegmento] == LINEA_VACIA){
-            int punteroMensaje;
             char *mensaje = (char*)malloc(TAMANIO_LINEAS);
-            char *mensaje2 = (char*)malloc(TAMANIO_LINEAS);
             mensaje = crearMensaje(prefijo,getTime(),contadorLinea);
-            for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS - 1; punteroMensaje++){
-                mensaje2[punteroMensaje] = segmento[punteroSegmento-1];
-                segmento[punteroSegmento-1] = mensaje[punteroMensaje];
-                punteroSegmento++;
-                }
+            
+            guardarBuffer(segmento,mensaje,punteroSegmento-1,TAMANIO_LINEAS - 1);
             sprintf(procesoActual->mensaje, mensaje);
 
-            free(mensaje);free(mensaje2);
+            free(mensaje);
             return contadorLinea;
         }
         punteroSegmento += TAMANIO_LINEAS;

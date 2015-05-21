@@ -21,11 +21,12 @@ proceso* newProcess(int pId, int pEscritura,int pDescanso,int pTipo,char *pSegme
 
 // Hilo encargado de la ejecución de los procesos
 void ejecutarProceso(proceso *procesoActual){
-	int shmid, llaveSegmento, contadorLinea, tipo;
+	int shmid, datosID,llaveSegmento, contadorLinea, tipo;
 	char *prefijo = (char*)malloc(TAMANIO_LINEAS);
 	char *prefijoLog = (char*)malloc(TAMANIO_LINEAS);
 	char *shm;
-    sem_t *mutex;
+	datos *segmentoDatos;
+    sem_t *mutex,*semDatos;
 	int tamanioMem;
 	char *tipoProceso = (char*)malloc(30);
 	tipo = procesoActual->tipo;
@@ -51,12 +52,16 @@ void ejecutarProceso(proceso *procesoActual){
 	        break;
 	}
 	if(shmid = getMemID(LLAVE_SEGMENTO,NULL)){
+		datosID = getMem(LLAVE_SEGMENTO_DATOS);
 		shm = getMem(shmid);
+		segmentoDatos = getMem(datosID);
 		tamanioMem = getCantidadLineas() * TAMANIO_LINEAS;
 		mutex = sem_open(SEM_NAME,0,0644,1);
+		semDatos = sem_open(SEM_DATOS_NAME,0,0644,1);
 		}
 	else{
 		mutex = sem_open(SEM_NAME,O_CREAT,0644,1);
+		semDatos = sem_open(SEM_DATOS_NAME,O_CREAT,0644,1);
 		}
 
 	while(EXITO){
@@ -64,30 +69,49 @@ void ejecutarProceso(proceso *procesoActual){
 		sem_wait(mutex);
 		if(getMemID(LLAVE_SEGMENTO,NULL)){
 			if(tipo == TIPO_WRITER){
+
 				/////////////////////////////////////////////////////
 				//region critica
 				if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
 					// Tiempo de escritura
+					sem_wait(semDatos);
+					setLectura(0);
+
+					sem_post(semDatos);
 					procesoActual->lineaActual = contadorLinea;
 					procesoActual->estado = ESTADO_ESCRITURA;
 					actualizar(llaveSegmento,prefijoLog,procesoActual);
 					registrar(procesoActual);
 					sleep(procesoActual->escritura);
+
+					setLectura(1);
+					sem_post(semDatos);
 					}
 				}
 			else if(tipo == TIPO_READER){
-				leer(tamanioMem,shm,procesoActual);
+				sem_wait(semDatos);
+				if(getLectura()){
+					leer(tamanioMem,shm,procesoActual);
+					}
+				sem_post(semDatos);
+
 				}
 			else if(tipo == TIPO_READER_EGOISTA){
 				/////////////////////////////////////////////////////
 				//region critica
 				if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
 					// Tiempo de escritura
+					sem_wait(semDatos);
+					setLectura(0);
+
 					procesoActual->lineaActual = contadorLinea;
 					procesoActual->estado = ESTADO_LECTURA;
 					actualizar(llaveSegmento,prefijoLog,procesoActual);
 					registrar(procesoActual);
 					sleep(procesoActual->escritura);
+
+					setLectura(1);
+					sem_post(semDatos);
 					}
 				}
 				sem_post(mutex);
@@ -105,9 +129,9 @@ void ejecutarProceso(proceso *procesoActual){
 			// el proceso muere.
 			sem_post(mutex);
 			sem_close(mutex);
+			sem_close(semDatos);
 			printf("El %s %d fue finalizado.\n",tipoProceso,procesoActual->id);////////////////////////////////////
 		    break;
-			//falta escribir en bitácora
 			}
 		}
 }
@@ -121,13 +145,13 @@ void initProcesos(int cantidadProcesos,int tiempoEscritura,int tiempoDescanso,in
 	// Monitor
 	switch(tipo){
 		case TIPO_WRITER:
-			segmentoDatosID = getMemID(LLAVE_SEGMENTO_WRITERS,cantidadProcesos);
+			segmentoDatosID = getMemID(LLAVE_SEGMENTO_WRITERS,cantidadProcesos*TAMANIO_LINEAS);
 			break;
 		case TIPO_READER:
-			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS,cantidadProcesos);
+			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS,cantidadProcesos*TAMANIO_LINEAS);
 			break;
 		case TIPO_READER_EGOISTA:
-			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS_EGOISTAS,cantidadProcesos);
+			segmentoDatosID = getMemID(LLAVE_SEGMENTO_READERS_EGOISTAS,cantidadProcesos*TAMANIO_LINEAS);
 			break;
 		default:
 			break;

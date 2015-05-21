@@ -18,14 +18,14 @@ char *getMem(int shmid){
 // Retorna un arreglo de chars con la hora
 char *getTime(){
     time_t timer;
-    char *buffer = malloc(sizeof(char)*100);clearString(&buffer,100);
+    char *buffer = malloc(sizeof(char)*100);
     struct tm* tm_info;
     time(&timer);
     tm_info = localtime(&timer);
     strftime(buffer, 100, "%Y-%m-%d %H:%M:%S", tm_info);
-    char *fecha= malloc(sizeof(char)*100);clearString(&fecha,100);
+    char *fecha= malloc(sizeof(char)*100);
     sprintf(fecha,"%s",buffer);
-
+    free(buffer);
     return fecha;
 }
 
@@ -36,8 +36,7 @@ char *crearMensaje(char *prefijo,char *extra,int linea){
     char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
     char *str = (char*)malloc(TAMANIO_LINEAS+2);
     sprintf(str,"%s",extra);
-    sprintf(mensaje,"|%s|%3d|%s|\n",prefijo,linea,str);
-    //sprintf(mensaje,"|%s|%3d|%s|",prefijo,linea,str);
+    sprintf(mensaje,"|%s|%3d|%s|",prefijo,linea,str);
     free(str);
     /*
 |1|writer |  1|  1|2015-05-18 13:53:57|
@@ -49,8 +48,7 @@ _0_____________________________________
 
 char *crearMensajeVacio(){
     char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
-    sprintf(mensaje,"%s","|_____________________________________|\n");
-    //sprintf(mensaje,"%s","|_____________________________________|");
+    sprintf(mensaje,"%s","|_____________________________________|");
     return mensaje;
 }
 
@@ -63,8 +61,6 @@ int crearMemoria(int key, int cantidadLineas){
     if(shmid = getMemID(key,tamanio_mem)){
         //Se adjunta el segmento al espacio de memoria de datos.	
         shm = getMem(shmid);
-
-        //Se ingresan datos al segmento
         s = shm;
         int i;
         for (i = 0; i < tamanio_mem; i++){
@@ -82,26 +78,15 @@ int crearMemoria(int key, int cantidadLineas){
 
 //Libera la memoria compartida a partir de su llave
 int liberarMemoria(int key){
-    /*
-    * Obtenemos el segmento 
-    * creado por el inicializador.
-    */
     int shmid;
     // Comprobamos que exista
     if(shmid = getMemID(key,NULL)){
         char *shm = getMem(shmid);
-
-        /*
-        * Se quita el segmento del espacio de datos en memoria
-        */
         if (shmdt(shm) == -1){
             fprintf(stderr, "shmdt failed\n");
             return FRACASO;
         }
-
-        /*
-        * Se libera el segmento de memoria
-        */   
+ 
         if (shmctl(shmid, IPC_RMID, 0) == -1){
             fprintf(stderr, "shmctl(IPC_RMID) failed\n");
             return FRACASO;
@@ -149,18 +134,14 @@ int borrar(int tamanioMem,char *segmento,proceso *procesoActual){
     int punteroSegmento,contadorLinea;
     contadorLinea = getRandomNumber(0,(tamanioMem/TAMANIO_LINEAS)-1);
     punteroSegmento = 1 + (contadorLinea * TAMANIO_LINEAS);
-    if(segmento[punteroSegmento] == LINEA_LLENA){
-        int punteroMensaje;
+    if(segmento[punteroSegmento] != LINEA_VACIA){
+        int punteroMensaje = 0;
         char *mensaje = (char*)malloc(TAMANIO_LINEAS);
         char *mensaje2 = (char*)malloc(TAMANIO_LINEAS);
         mensaje = crearMensajeVacio();
-        for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS - 1 ; punteroMensaje++){
-            mensaje2[punteroMensaje] = segmento[punteroSegmento-1];
-            segmento[punteroSegmento-1] = mensaje[punteroMensaje];
-            punteroSegmento++;
-            }
+        guardarBuffer(mensaje2,&segmento[punteroSegmento-1],punteroMensaje,TAMANIO_LINEAS - 1);
+        guardarBuffer(segmento,mensaje,punteroSegmento-1,TAMANIO_LINEAS - 1);
         sprintf(procesoActual->mensaje, mensaje2);
-
         free(mensaje);free(mensaje2);
         return contadorLinea+1;
     }
@@ -174,30 +155,25 @@ int leer(int tamanioMem,char *s,proceso *procesoActual){
     punteroSegmento = 1 + ((contadorLinea-1)*TAMANIO_LINEAS);
     char *prefijoLog = (char*)malloc(TAMANIO_LINEAS+2);
 
-    if(s[punteroSegmento] == LINEA_LLENA){
-        int punteroMensaje;
+    if(s[punteroSegmento] != LINEA_VACIA){
+        int punteroMensaje = 0;
         char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
-        //printf("%c\n",s[punteroSegmento]);
-        for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS ; punteroMensaje++){
-            mensaje[punteroMensaje] = s[punteroSegmento-1];
-            punteroSegmento++;
-            }
-
-        procesoActual->estado = ESTADO_LECTURA;
-        //sprintf("%s",mensaje);
-        //registrar(LLAVE_SEGMENTO_READERS,mensaje,procesoActual);
-        
         sprintf(prefijoLog,"%s|%3d",READER,procesoActual->id);
+        guardarBuffer(mensaje,&s[punteroSegmento-1],punteroMensaje,TAMANIO_LINEAS - 1);
+        procesoActual->estado = ESTADO_LECTURA;
+        sprintf(procesoActual->mensaje,mensaje);
+        free(mensaje);
         actualizar(LLAVE_SEGMENTO_READERS,prefijoLog,procesoActual);
         registrar(procesoActual);
         sleep(procesoActual->escritura);
-        free(mensaje);
         procesoActual->lineaActual += 1;
         if(procesoActual->lineaActual == (tamanioMem/TAMANIO_LINEAS)){
             procesoActual->lineaActual = 1;
             }
+        free(prefijoLog);
         return contadorLinea;
         }
+    free(prefijoLog);
     procesoActual->lineaActual = 1;
     return FRACASO;
 }
@@ -206,13 +182,15 @@ int leer(int tamanioMem,char *s,proceso *procesoActual){
 // encuentren todo listo para ejecutarse
 // recibe la cantidad de lineas que tendrá el segmento
 void init(int lineas){
-    sem_t *mutex,*semLog;
+    sem_t *mutex,*semLog,*semDatos;
     mutex = sem_open(SEM_NAME,O_CREAT,0644,1);
     semLog = sem_open(SEM_LOG_NAME,O_CREAT,0644,1);
-    if(crearMemoria(LLAVE_SEGMENTO_DATOS,2) && crearMemoria(LLAVE_SEGMENTO,lineas)){
+    semDatos = sem_open(SEM_DATOS_NAME,O_CREAT,0644,1);
+    //if(crearMemoria(LLAVE_SEGMENTO_DATOS,2) && crearMemoria(LLAVE_SEGMENTO,lineas)){
+    if(crearMemoria(LLAVE_SEGMENTO_DATOS,sizeof(datos)) && crearMemoria(LLAVE_SEGMENTO,lineas)){
         setCantidadLineas(lineas);
         FILE *fp = fopen("bitacora.txt", "w");
-        fprintf(fp, "Se inicializo el programa a las: %s.\n", getTime());
+        fprintf(fp, "Se inicializo el programa a las: %s.\n\n", getTime());
         fclose(fp);
         printf(MENSAJE_CREACION_EXITOSA);
     }
@@ -221,16 +199,17 @@ void init(int lineas){
     }
     sem_close(mutex);
     sem_close(semLog);
+    sem_close(semDatos);
 }
 
 // Finaliza todos los procesos
 void finalizar(){
     printEstado();
 
-    sem_t *mutex,*semLog;
+    sem_t *mutex,*semLog,*semDatos;
     mutex = sem_open(SEM_NAME,O_CREAT,0644,1);
     semLog = sem_open(SEM_LOG_NAME,0,0644,1);
-    
+    semDatos = sem_open(SEM_DATOS_NAME,0,0644,1);
     //sem_wait(mutex);
     if(liberarMemoria(LLAVE_SEGMENTO) && liberarMemoria(LLAVE_SEGMENTO_DATOS)){
         //falta finalizar demás procesos
@@ -244,6 +223,10 @@ void finalizar(){
             printf(MENSAJE_ERROR_READERS_EGOISTAS);
             }
         printf(MENSAJE_FINALIZACION_EXITOSA);
+        FILE *fp = fopen("bitacora.txt", "a");
+        fprintf(fp, "\nSe finalizo el programa a las: %s.", getTime());
+        fclose(fp);
+        printf(MENSAJE_CREACION_EXITOSA);
     }
     else{
         printf(MENSAJE_FINALIZACION_FALLIDA);
@@ -251,6 +234,8 @@ void finalizar(){
     //sem_post(mutex);
     sem_close(mutex);
     sem_close(semLog);
+    sem_close(semDatos);
     sem_unlink(SEM_NAME);
     sem_unlink(SEM_LOG_NAME);
+    sem_unlink(SEM_DATOS_NAME);
 }

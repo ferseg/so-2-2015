@@ -6,6 +6,7 @@
 #define ARCHIVO "bitacora.txt"
 #define SEM_NAME "Ken"
 #define SEM_LOG_NAME "Log"
+#define SEM_DATOS_NAME "Datos"
 #define EXITO 1
 #define FRACASO 0
 #define LINEA_VACIA '_'

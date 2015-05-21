@@ -9,7 +9,7 @@ void registrar(proceso *procesoActual){
             fprintf(fp, "El writer %d escribio el mensaje %s, en la linea %d, a las %s.\n\n", procesoActual->id,procesoActual->mensaje,procesoActual->lineaActual,getTime());
             break;
         case TIPO_READER:
-            fprintf(fp,"El lector %d leyo el mensaje...\n",procesoActual->id);
+            fprintf(fp,"El lector %d leyo el mensaje %s, en la linea %d, a las %s.\n\n",procesoActual->id,procesoActual->mensaje,procesoActual->lineaActual,getTime());
             break;
         case TIPO_READER_EGOISTA:
             fprintf(fp, "El reader egoista %d borro el mensaje %s, en la linea %d, a las %s.\n\n",procesoActual->id,procesoActual->mensaje,procesoActual->lineaActual,getTime());
@@ -32,10 +32,7 @@ void actualizar(int key,char *prefijo, proceso *procesoActual){
     if(getMemID(key,NULL)){
         punteroSegmento = (procesoActual->id-1) * TAMANIO_LINEAS;
         mensaje = crearMensaje(prefijo,procesoActual->estado,procesoActual->lineaActual);
-        for(punteroMensaje = 0; punteroMensaje < TAMANIO_LINEAS ; punteroMensaje++){
-            procesoActual->segmentoDatos[punteroSegmento] = mensaje[punteroMensaje];
-            punteroSegmento++;
-        }
+        guardarBuffer(procesoActual->segmentoDatos,mensaje,punteroSegmento,TAMANIO_LINEAS - 1);
 	}
     free(mensaje);
     sem_post(semLog);

@@ -66,10 +66,10 @@ void ejecutarProceso(proceso *procesoActual){
 
 	while(EXITO){
 		// Inicializamos el semaforo
-		sem_wait(mutex);
+		//sem_wait(mutex);
 		if(getMemID(LLAVE_SEGMENTO,NULL)){
 			if(tipo == TIPO_WRITER){
-
+				sem_wait(mutex);
 				/////////////////////////////////////////////////////
 				//region critica
 				if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
@@ -87,18 +87,23 @@ void ejecutarProceso(proceso *procesoActual){
 					setLectura(1);
 					sem_post(semDatos);
 					}
+				sem_post(mutex);
 				}
 			else if(tipo == TIPO_READER){
+				//sem_post(mutex);
 				sem_wait(semDatos);
 				if(getLectura()){
+					sem_post(semDatos);
 					leer(tamanioMem,shm,procesoActual);
 					}
-				sem_post(semDatos);
-
+				else{
+					sem_post(semDatos);
+					}
 				}
 			else if(tipo == TIPO_READER_EGOISTA){
 				/////////////////////////////////////////////////////
 				//region critica
+				sem_wait(mutex);
 				if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
 					// Tiempo de escritura
 					sem_wait(semDatos);
@@ -113,8 +118,9 @@ void ejecutarProceso(proceso *procesoActual){
 					setLectura(1);
 					sem_post(semDatos);
 					}
-				}
 				sem_post(mutex);
+				}
+				//sem_post(mutex);
 				// Tiempo de descanso
 				procesoActual->estado = ESTADO_DESCANSO;
 				actualizar(llaveSegmento,prefijoLog,procesoActual);

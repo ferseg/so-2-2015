@@ -1,10 +1,314 @@
-holis
-holis
-holis
-holis
-holis
-El writer 1 escribiÃ³ en la linea 1 a las 2015-05-20 07:14:44.
-El writer 2 escribiÃ³ en la linea 2 a las 2015-05-20 07:14:45.
-El writer 1 escribiÃ³ en la linea 3 a las 2015-05-20 07:14:46.
-El writer 2 escribiÃ³ en la linea 4 a las 2015-05-20 07:14:47.
-El writer 1 escribiÃ³ en la linea 5 a las 2015-05-20 07:14:48.
+Se inicializo el programa a las: 2015-05-20 23:03:00.
+
+El writer 1 escribio el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:13.
+
+El writer 1 escribio el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:17.
+
+El writer 1 escribio el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:21.
+
+El lector 3 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 2 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 4 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 5 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 1 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 7 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 10 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 8 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 9 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El lector 6 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:24.
+
+El writer 1 escribio el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:25.
+
+El lector 9 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 6 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 1 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 10 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 5 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 4 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 7 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 2 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 8 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El lector 3 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:28.
+
+El writer 1 escribio el mensaje |1|writer |  1|  5|2015-05-20 23:03:29|, en la linea 5, a las 2015-05-20 23:03:29.
+
+El lector 1 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 9 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 4 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 7 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 6 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 3 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 2 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 8 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 5 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 10 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:32.
+
+El lector 1 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 9 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 5 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 3 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 6 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 2 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 7 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 4 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 10 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 8 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:34.
+
+El lector 9 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 1 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 2 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 4 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 6 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 3 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 8 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 5 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 10 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 7 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:36.
+
+El lector 9 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 1 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 2 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 3 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 4 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 6 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 8 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 5 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 7 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 10 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:38.
+
+El lector 1 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 9 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 2 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 3 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 5 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 10 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 6 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 7 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 4 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 8 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|ÿ, en la linea 3, a las 2015-05-20 23:03:40.
+
+El lector 5 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 3 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 2 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 7 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 6 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 4 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 9 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 1 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 10 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 8 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:42.
+
+El lector 2 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 3 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 6 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 5 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 7 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 9 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 1 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 10 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 8 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 4 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:44.
+
+El lector 2 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 3 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 6 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 5 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 9 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 7 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 1 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 10 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|ÿ, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 8 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 4 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:46.
+
+El lector 3 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 5 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 9 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 2 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 1 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 6 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 7 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 8 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 4 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 10 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:48.
+
+El lector 3 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 6 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 2 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 5 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 1 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 9 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 4 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 7 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 8 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 10 leyo el mensaje |1|writer |  1|  4|2015-05-20 23:03:25|, en la linea 4, a las 2015-05-20 23:03:50.
+
+El lector 3 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 2 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 6 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 9 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 1 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 4 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 5 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 7 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 10 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 8 leyo el mensaje |1|writer |  1|  1|2015-05-20 23:03:13|, en la linea 1, a las 2015-05-20 23:03:52.
+
+El lector 3 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 2 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 6 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 9 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|ÿ, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 1 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 4 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 5 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 7 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 10 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 8 leyo el mensaje |1|writer |  1|  2|2015-05-20 23:03:17|, en la linea 2, a las 2015-05-20 23:03:54.
+
+El lector 3 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 2 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 6 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 9 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 1 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 4 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 7 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 5 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 10 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+El lector 8 leyo el mensaje |1|writer |  1|  3|2015-05-20 23:03:21|, en la linea 3, a las 2015-05-20 23:03:56.
+
+
+Se finalizo el programa a las: 2015-05-20 23:03:57.

@@ -16,6 +16,11 @@ int main()
 	printf("Ingrese el tiempo de descanso: ");
 	scanf("%d", &tiempoDescanso);
 
-	//Inicializamos los readers egoistas
-	initProcesos(cantidadReaders,tiempoEscritura,tiempoDescanso,LLAVE_SEGMENTO_READERS_EGOISTAS,TIPO_READER_EGOISTA);
+	if((cantidadReaders>0) && (tiempoEscritura>0) && (tiempoDescanso>0)){
+		//Inicializamos los readers egoistas
+		initProcesos(cantidadReaders,tiempoEscritura,tiempoDescanso,LLAVE_SEGMENTO_READERS_EGOISTAS,TIPO_READER_EGOISTA);
+		}
+	else{
+		printf("Favor ingresar valores mayores a cero.\n");
+	}
 }

@@ -70,56 +70,68 @@ void ejecutarProceso(proceso *procesoActual){
 		if(getMemID(LLAVE_SEGMENTO,NULL)){
 			if(tipo == TIPO_WRITER){
 				sem_wait(mutex);
+				sem_wait(semDatos);
 				/////////////////////////////////////////////////////
 				//region critica
-				if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual) && getMemID(LLAVE_SEGMENTO,NULL)){
+				if(getLectores() == 0){
+				//if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
 					// Tiempo de escritura
-					sem_wait(semDatos);
-					setLectura(0);decReader();
-
-					sem_post(semDatos);
-					procesoActual->lineaActual = contadorLinea;
-					procesoActual->estado = ESTADO_ESCRITURA;
-					actualizar(llaveSegmento,prefijoLog,procesoActual);
-					registrar(procesoActual);
-					sleep(procesoActual->escritura);
-
-					setLectura(1);
-					sem_post(semDatos);
+					//sem_wait(semDatos);
+					if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
+					//if(getLectores()==0){
+						setLectura(0);decReader();
+						//sem_post(semDatos);
+						//procesoActual->lineaActual = contadorLinea;
+						//procesoActual->estado = ESTADO_ESCRITURA;
+						actualizar(llaveSegmento,prefijoLog,procesoActual);
+						registrar(procesoActual);
+						sleep(procesoActual->escritura);
+						setLectura(1);
+						}
+					//sem_post(semDatos);
 					}
+				sem_post(semDatos);
 				sem_post(mutex);
 				}
 			else if(tipo == TIPO_READER){
 				//sem_post(mutex);
-				sem_wait(semDatos);decReader();
+				sem_wait(semDatos);
 				if(getLectura()){
+					decReader();
+					incLectores();
 					sem_post(semDatos);
 					leer(tamanioMem,shm,procesoActual);
-					}
-				else{
-					sem_post(semDatos);
-					}
+					sem_wait(semDatos);
+					decLectores();
+					//sem_post(semDatos);
+				 	}
+				// else{
+				// 	sem_post(semDatos);
+				// 	}
+				sem_post(semDatos);
 				}
 			else if(tipo == TIPO_READER_EGOISTA){
 				/////////////////////////////////////////////////////
 				//region critica
 				sem_wait(mutex);
-				if(contadorLinea = borrar(tamanioMem,shm,procesoActual) && getMemID(LLAVE_SEGMENTO,NULL)){
+				sem_wait(semDatos);
+				//if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
+				if(incReader()<4 && getLectores() == 0){
 					// Tiempo de escritura
-					sem_wait(semDatos);
-					if(incReader()<3){
+					//sem_wait(semDatos);
+				
+					//if(incReader()<3 && getLectores()==0){
+					if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
 						setLectura(0);
-
-						procesoActual->lineaActual = contadorLinea;
-						procesoActual->estado = ESTADO_LECTURA;
+						//procesoActual->estado = ESTADO_LECTURA;
 						actualizar(llaveSegmento,prefijoLog,procesoActual);
 						registrar(procesoActual);
 						sleep(procesoActual->escritura);
-
 						setLectura(1);
+
 						}
-					sem_post(semDatos);
 					}
+				sem_post(semDatos);
 				sem_post(mutex);
 				}
 				//sem_post(mutex);

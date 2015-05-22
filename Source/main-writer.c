@@ -16,6 +16,11 @@ int main()
 	printf("Ingrese el tiempo de descanso: ");
 	scanf("%d", &tiempoDescanso);
 
-	//Inicializamos los writers
-	initProcesos(cantidadWriters,tiempoEscritura,tiempoDescanso,LLAVE_SEGMENTO_WRITERS,TIPO_WRITER);
+	if((cantidadWriters>0) && (tiempoEscritura>0) && (tiempoDescanso>0)){
+		//Inicializamos los writers
+		initProcesos(cantidadWriters,tiempoEscritura,tiempoDescanso,LLAVE_SEGMENTO_WRITERS,TIPO_WRITER);
+		}
+	else{
+		printf("Favor ingresar valores mayores a cero.\n");
+	}
 }

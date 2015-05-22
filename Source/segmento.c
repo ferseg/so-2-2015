@@ -116,6 +116,8 @@ int escribir(char *prefijo,int tamanioMem,char *segmento,proceso *procesoActual)
             sprintf(procesoActual->mensaje, mensaje);
 
             free(mensaje);
+            procesoActual->lineaActual = contadorLinea;
+            procesoActual->estado = ESTADO_ESCRITURA;
             return contadorLinea;
         }
         punteroSegmento += TAMANIO_LINEAS;
@@ -142,6 +144,8 @@ int borrar(int tamanioMem,char *segmento,proceso *procesoActual){
         guardarBuffer(mensaje2,&segmento[punteroSegmento-1],punteroMensaje,TAMANIO_LINEAS - 1);
         guardarBuffer(segmento,mensaje,punteroSegmento-1,TAMANIO_LINEAS - 1);
         sprintf(procesoActual->mensaje, mensaje2);
+        procesoActual->lineaActual = contadorLinea+1;
+        procesoActual->estado = ESTADO_LECTURA;
         free(mensaje);free(mensaje2);
         return contadorLinea+1;
     }
@@ -155,7 +159,7 @@ int leer(int tamanioMem,char *s,proceso *procesoActual){
     punteroSegmento = 1 + ((contadorLinea-1)*TAMANIO_LINEAS);
     char *prefijoLog = (char*)malloc(TAMANIO_LINEAS+2);
 
-    if(s[punteroSegmento] != LINEA_VACIA){
+    if(s[punteroSegmento] != LINEA_VACIA && getMemID(LLAVE_SEGMENTO, NULL)){
         int punteroMensaje = 0;
         char *mensaje = (char*)malloc(TAMANIO_LINEAS+2);
         sprintf(prefijoLog,"%s|%3d",READER,procesoActual->id);
@@ -167,7 +171,7 @@ int leer(int tamanioMem,char *s,proceso *procesoActual){
         registrar(procesoActual);
         sleep(procesoActual->escritura);
         procesoActual->lineaActual += 1;
-        if(procesoActual->lineaActual == (tamanioMem/TAMANIO_LINEAS)){
+        if(procesoActual->lineaActual > (tamanioMem/TAMANIO_LINEAS)){
             procesoActual->lineaActual = 1;
             }
         free(prefijoLog);
@@ -182,13 +186,13 @@ int leer(int tamanioMem,char *s,proceso *procesoActual){
 // encuentren todo listo para ejecutarse
 // recibe la cantidad de lineas que tendrá el segmento
 void init(int lineas){
+    int datosID;
     sem_t *mutex,*semLog,*semDatos;
     mutex = sem_open(SEM_NAME,O_CREAT,0644,1);
     semLog = sem_open(SEM_LOG_NAME,O_CREAT,0644,1);
     semDatos = sem_open(SEM_DATOS_NAME,O_CREAT,0644,1);
-    //if(crearMemoria(LLAVE_SEGMENTO_DATOS,2) && crearMemoria(LLAVE_SEGMENTO,lineas)){
-    if(crearMemoria(LLAVE_SEGMENTO_DATOS,sizeof(datos)) && crearMemoria(LLAVE_SEGMENTO,lineas)){
-        setCantidadLineas(lineas);
+    if(datosID = crearMemoria(LLAVE_SEGMENTO_DATOS,sizeof(datos)) && crearMemoria(LLAVE_SEGMENTO,lineas)){
+        newDatos(lineas);
         FILE *fp = fopen("bitacora.txt", "w");
         fprintf(fp, "Se inicializo el programa a las: %s.\n\n", getTime());
         fclose(fp);

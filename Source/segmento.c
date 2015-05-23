@@ -215,6 +215,7 @@ void finalizar(){
     semLog = sem_open(SEM_LOG_NAME,0,0644,1);
     semDatos = sem_open(SEM_DATOS_NAME,0,0644,1);
     sem_wait(mutex);
+    sem_wait(semDatos);
     if(liberarMemoria(LLAVE_SEGMENTO) && liberarMemoria(LLAVE_SEGMENTO_DATOS)){
         //falta finalizar demás procesos
         if(!liberarMemoria(LLAVE_SEGMENTO_WRITERS)){
@@ -235,6 +236,7 @@ void finalizar(){
     else{
         printf(MENSAJE_FINALIZACION_FALLIDA);
     }
+    sem_post(semDatos);
     sem_post(mutex);
     sem_close(mutex);
     sem_close(semLog);

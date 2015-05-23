@@ -2,14 +2,17 @@
 
 void main(int argc, char *argv[])
 {
-	//Se esperan un parámetro para determinar la cantidad de líneas de memoria compartida.
-	if(argc == 2) {
-		// Inicializamos las variables y el segmento compartido
-		int cantidadLineas = atoi(argv[1]);
-		init(cantidadLineas);
+	int cantidadLineas;
+	char terminacion;
+	// Inicializamos las variables y el segmento compartido
+	printf("Ingrese la cantidad de lineas que tendra el segmento compartido: ");
+	if(scanf("%d%c", &cantidadLineas, &terminacion) != 2 || terminacion != '\n'){
+		printf(ERROR_PARAMETRO);
+		return;
 	}
-	else
-	{
-		printf("No indicó la cantidad de líneas que desea va a tener la memoria compartida\n");
+	if(cantidadLineas < 1){
+		printf(ERROR_NUMERO);
+		return;
 	}
+	init(cantidadLineas);
 }

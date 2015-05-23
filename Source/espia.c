@@ -46,12 +46,6 @@ void printEstado(){
     if(segmentoID = getMemID(LLAVE_SEGMENTO,NULL)){
         segmento = getMem(segmentoID);
         printf("%s%s%s%s%s\n",BORDE, TITULO_DATOS, BORDE, segmento, BORDE);
-        
-        // ver datos
-        // if(datosID = getMemID(LLAVE_SEGMENTO_DATOS,NULL)){
-        //     datos = getMem(datosID);
-        //     printf("%s%s%s%s\n%s\n",BORDE, "datos\n", BORDE, datos, BORDE);
-        //     }
 
         // ver writers
         if(writersID = getMemID(LLAVE_SEGMENTO_WRITERS,NULL)){

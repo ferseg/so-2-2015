@@ -23,4 +23,7 @@
 #define ESTADO_LECTURA   "Leyendo              "
 #define ESTADO_ESCRITURA "Escribiendo          "
 
+#define ERROR_NUMERO    "Por favor asegurese de ingresar valores mayores a cero.\n"
+#define ERROR_PARAMETRO "Por favor asegurese de ingresar un numero positivo.\n"
+
 #endif // LLAVES_H_

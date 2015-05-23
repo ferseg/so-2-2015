@@ -66,36 +66,34 @@ void ejecutarProceso(proceso *procesoActual){
 
 	while(EXITO){
 		// Inicializamos el semaforo
-		//sem_wait(mutex);
-		if(getMemID(LLAVE_SEGMENTO,NULL)){
-			if(tipo == TIPO_WRITER){
-				sem_wait(mutex);
-				sem_wait(semDatos);
-				/////////////////////////////////////////////////////
-				//region critica
+		if(tipo == TIPO_WRITER){
+			sem_wait(mutex);
+			sem_wait(semDatos);
+			/////////////////////////////////////////////////////
+			//region critica
+			if(getMemID(LLAVE_SEGMENTO,NULL)){
 				if(getLectores() == 0){
-				//if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
 					// Tiempo de escritura
-					//sem_wait(semDatos);
 					if(contadorLinea = escribir(prefijo,tamanioMem,shm,procesoActual)){
-					//if(getLectores()==0){
 						setLectura(0);decReader();
-						//sem_post(semDatos);
-						//procesoActual->lineaActual = contadorLinea;
-						//procesoActual->estado = ESTADO_ESCRITURA;
 						actualizar(llaveSegmento,prefijoLog,procesoActual);
 						registrar(procesoActual);
 						sleep(procesoActual->escritura);
 						setLectura(1);
 						}
-					//sem_post(semDatos);
 					}
+				}
+			else{
 				sem_post(semDatos);
 				sem_post(mutex);
+				break;
 				}
-			else if(tipo == TIPO_READER){
-				//sem_post(mutex);
-				sem_wait(semDatos);
+			sem_post(semDatos);
+			sem_post(mutex);
+			}
+		else if(tipo == TIPO_READER){
+			sem_wait(semDatos);
+			if(getMemID(LLAVE_SEGMENTO,NULL)){
 				if(getLectura()){
 					decReader();
 					incLectores();
@@ -103,57 +101,55 @@ void ejecutarProceso(proceso *procesoActual){
 					leer(tamanioMem,shm,procesoActual);
 					sem_wait(semDatos);
 					decLectores();
-					//sem_post(semDatos);
-				 	}
-				// else{
-				// 	sem_post(semDatos);
-				// 	}
-				sem_post(semDatos);
+					}
 				}
-			else if(tipo == TIPO_READER_EGOISTA){
-				/////////////////////////////////////////////////////
-				//region critica
-				sem_wait(mutex);
-				sem_wait(semDatos);
-				//if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
+			else{
+				sem_post(semDatos);
+				break;
+				}
+			sem_post(semDatos);
+			}
+		else if(tipo == TIPO_READER_EGOISTA){
+			/////////////////////////////////////////////////////
+			//region critica
+			sem_wait(mutex);
+			sem_wait(semDatos);
+			if(getMemID(LLAVE_SEGMENTO,NULL)){
 				if(incReader()<4 && getLectores() == 0){
 					// Tiempo de escritura
-					//sem_wait(semDatos);
-				
-					//if(incReader()<3 && getLectores()==0){
 					if(contadorLinea = borrar(tamanioMem,shm,procesoActual)){
 						setLectura(0);
-						//procesoActual->estado = ESTADO_LECTURA;
 						actualizar(llaveSegmento,prefijoLog,procesoActual);
 						registrar(procesoActual);
 						sleep(procesoActual->escritura);
 						setLectura(1);
-
 						}
 					}
-				sem_post(semDatos);
-				sem_post(mutex);
 				}
-				//sem_post(mutex);
-				// Tiempo de descanso
-				procesoActual->estado = ESTADO_DESCANSO;
-				actualizar(llaveSegmento,prefijoLog,procesoActual);
-				sleep(procesoActual->descanso);
-				/////////////////////////////////////////////////////
-				// Luego de dormir se bloquean y esperan el semáforo
-				procesoActual->estado = ESTADO_BLOQUEADO;
-				actualizar(llaveSegmento,prefijoLog,procesoActual);
-			}
-		else{
-			// Al no encontrar memoria compartida
-			// el proceso muere.
+			else{
+				sem_post(semDatos);
+				sem_post(mutex);				
+				break;
+				}
+			sem_post(semDatos);
 			sem_post(mutex);
-			sem_close(mutex);
-			sem_close(semDatos);
-			printf("El %s %d fue finalizado.\n",tipoProceso,procesoActual->id);////////////////////////////////////
-		    break;
 			}
+
+		// Tiempo de descanso
+		procesoActual->estado = ESTADO_DESCANSO;
+		actualizar(llaveSegmento,prefijoLog,procesoActual);
+		sleep(procesoActual->descanso);
+		/////////////////////////////////////////////////////
+		// Luego de dormir se bloquean y esperan el semáforo
+		procesoActual->estado = ESTADO_BLOQUEADO;
+		actualizar(llaveSegmento,prefijoLog,procesoActual);
 		}
+	// Al no encontrar memoria compartida
+	// el proceso muere.
+	//sem_post(mutex);
+	sem_close(mutex);
+	sem_close(semDatos);
+	printf("El %s %d fue finalizado.\n",tipoProceso,procesoActual->id);
 }
 
 // Inicializa los writers, recibe cantidad de writers, tiempo de escritura,

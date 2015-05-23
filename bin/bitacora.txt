@@ -1,0 +1,106 @@
+Se inicializo el programa a las: 2015-05-23 13:28:44.
+
+El writer 1 escribio el mensaje |1|writer |  1|  1|2015-05-23 13:29:00|, en la linea 1, a las 2015-05-23 13:29:00.
+
+El lector 2 leyo el mensaje |1|writer |  1|  1|2015-05-23 13:29:00|, en la linea 1, a las 2015-05-23 13:29:02.
+
+El lector 1 leyo el mensaje |1|writer |  1|  1|2015-05-23 13:29:00|, en la linea 1, a las 2015-05-23 13:29:02.
+
+El writer 1 escribio el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:04.
+
+El lector 1 leyo el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:06.
+
+El lector 2 leyo el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:06.
+
+El writer 1 escribio el mensaje |1|writer |  1|  3|2015-05-23 13:29:08|, en la linea 3, a las 2015-05-23 13:29:08.
+
+El lector 1 leyo el mensaje |1|writer |  1|  3|2015-05-23 13:29:08|, en la linea 3, a las 2015-05-23 13:29:10.
+
+El lector 2 leyo el mensaje |1|writer |  1|  3|2015-05-23 13:29:08|, en la linea 3, a las 2015-05-23 13:29:10.
+
+El writer 1 escribio el mensaje |1|writer |  1|  4|2015-05-23 13:29:12|, en la linea 4, a las 2015-05-23 13:29:12.
+
+El lector 2 leyo el mensaje |1|writer |  1|  4|2015-05-23 13:29:12|, en la linea 4, a las 2015-05-23 13:29:14.
+
+El lector 1 leyo el mensaje |1|writer |  1|  4|2015-05-23 13:29:12|, en la linea 4, a las 2015-05-23 13:29:14.
+
+El writer 1 escribio el mensaje |1|writer |  1|  5|2015-05-23 13:29:16|, en la linea 5, a las 2015-05-23 13:29:16.
+
+El lector 1 leyo el mensaje |1|writer |  1|  5|2015-05-23 13:29:16|, en la linea 5, a las 2015-05-23 13:29:18.
+
+El lector 2 leyo el mensaje |1|writer |  1|  5|2015-05-23 13:29:16|, en la linea 5, a las 2015-05-23 13:29:18.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  3|2015-05-23 13:29:08|, en la linea 3, a las 2015-05-23 13:29:20.
+
+El writer 1 escribio el mensaje |1|writer |  1|  3|2015-05-23 13:29:22|, en la linea 3, a las 2015-05-23 13:29:22.
+
+El lector 2 leyo el mensaje |1|writer |  1|  1|2015-05-23 13:29:00|, en la linea 1, a las 2015-05-23 13:29:24.
+
+El lector 1 leyo el mensaje |1|writer |  1|  1|2015-05-23 13:29:00|, en la linea 1, a las 2015-05-23 13:29:24.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  5|2015-05-23 13:29:16|, en la linea 5, a las 2015-05-23 13:29:26.
+
+El lector 2 leyo el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:28.
+
+El lector 1 leyo el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:28.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  1|2015-05-23 13:29:00|, en la linea 1, a las 2015-05-23 13:29:30.
+
+El writer 1 escribio el mensaje |1|writer |  1|  1|2015-05-23 13:29:32|, en la linea 1, a las 2015-05-23 13:29:32.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  1|2015-05-23 13:29:32|, en la linea 1, a las 2015-05-23 13:29:34.
+
+El writer 1 escribio el mensaje |1|writer |  1|  1|2015-05-23 13:29:36|, en la linea 1, a las 2015-05-23 13:29:36.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  1|2015-05-23 13:29:36|, en la linea 1, a las 2015-05-23 13:29:38.
+
+El writer 1 escribio el mensaje |1|writer |  1|  1|2015-05-23 13:29:40|, en la linea 1, a las 2015-05-23 13:29:40.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  3|2015-05-23 13:29:22|, en la linea 3, a las 2015-05-23 13:29:42.
+
+El writer 1 escribio el mensaje |1|writer |  1|  3|2015-05-23 13:29:44|, en la linea 3, a las 2015-05-23 13:29:44.
+
+El lector 1 leyo el mensaje |1|writer |  1|  1|2015-05-23 13:29:40|, en la linea 1, a las 2015-05-23 13:29:46.
+
+El lector 2 leyo el mensaje |1|writer |  1|  1|2015-05-23 13:29:40|, en la linea 1, a las 2015-05-23 13:29:46.
+
+El writer 1 escribio el mensaje |1|writer |  1|  5|2015-05-23 13:29:48|, en la linea 5, a las 2015-05-23 13:29:48.
+
+El lector 1 leyo el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:50.
+
+El lector 2 leyo el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:50.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  2|2015-05-23 13:29:04|, en la linea 2, a las 2015-05-23 13:29:52.
+
+El writer 1 escribio el mensaje |1|writer |  1|  2|2015-05-23 13:29:54|, en la linea 2, a las 2015-05-23 13:29:54.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  1|2015-05-23 13:29:40|, en la linea 1, a las 2015-05-23 13:29:56.
+
+El writer 1 escribio el mensaje |1|writer |  1|  1|2015-05-23 13:29:58|, en la linea 1, a las 2015-05-23 13:29:58.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  5|2015-05-23 13:29:48|, en la linea 5, a las 2015-05-23 13:30:00.
+
+El lector 1 leyo el mensaje |1|writer |  1|  3|2015-05-23 13:29:44|, en la linea 3, a las 2015-05-23 13:30:02.
+
+El lector 2 leyo el mensaje |1|writer |  1|  3|2015-05-23 13:29:44|, en la linea 3, a las 2015-05-23 13:30:02.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  2|2015-05-23 13:29:54|, en la linea 2, a las 2015-05-23 13:30:04.
+
+El writer 1 escribio el mensaje |1|writer |  1|  2|2015-05-23 13:30:06|, en la linea 2, a las 2015-05-23 13:30:06.
+
+El lector 2 leyo el mensaje |1|writer |  1|  4|2015-05-23 13:29:12|, en la linea 4, a las 2015-05-23 13:30:08.
+
+El lector 1 leyo el mensaje |1|writer |  1|  4|2015-05-23 13:29:12|, en la linea 4, a las 2015-05-23 13:30:08.
+
+El writer 1 escribio el mensaje |1|writer |  1|  5|2015-05-23 13:30:10|, en la linea 5, a las 2015-05-23 13:30:10.
+
+El reader egoista 1 borro el mensaje |1|writer |  1|  2|2015-05-23 13:30:06|, en la linea 2, a las 2015-05-23 13:30:12.
+
+El writer 1 escribio el mensaje |1|writer |  1|  2|2015-05-23 13:30:14|, en la linea 2, a las 2015-05-23 13:30:14.
+
+El lector 2 leyo el mensaje |1|writer |  1|  5|2015-05-23 13:30:10|, en la linea 5, a las 2015-05-23 13:30:16.
+
+El lector 1 leyo el mensaje |1|writer |  1|  5|2015-05-23 13:30:10|, en la linea 5, a las 2015-05-23 13:30:16.
+
+
+Se finalizo el programa a las: 2015-05-23 13:30:18.

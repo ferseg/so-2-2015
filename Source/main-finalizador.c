@@ -1,4 +1,4 @@
-#include "../Headers/inicializador.h"
+#include "../Headers/segmento.h"
 
 int main()
 {

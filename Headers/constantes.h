@@ -1,9 +1,15 @@
 #ifndef LLAVES_H_
 #define LLAVES_H_
 
+#include "../Headers/utilities.h"
+
+#define ARCHIVO "bitacora.txt"
+#define SEM_NAME "Ken"
+#define SEM_LOG_NAME "Log"
+#define SEM_DATOS_NAME "Datos"
 #define EXITO 1
 #define FRACASO 0
-#define LINEA_VACIA '0'
+#define LINEA_VACIA '_'
 #define LINEA_LLENA '1'
 #define TAMANIO_LINEAS 40
 #define LLAVE_SEGMENTO 2015
@@ -16,5 +22,8 @@
 #define ESTADO_BLOQUEADO "Bloqueado            "
 #define ESTADO_LECTURA   "Leyendo              "
 #define ESTADO_ESCRITURA "Escribiendo          "
+
+#define ERROR_NUMERO    "Por favor asegurese de ingresar valores mayores a cero.\n"
+#define ERROR_PARAMETRO "Por favor asegurese de ingresar un numero positivo.\n"
 
 #endif // LLAVES_H_
